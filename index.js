@@ -8,15 +8,48 @@ function track(eventName, params = {}) {
   } catch (_) {}
 }
 
+const trackedEvents = {
+  booking: 'booking_click',
+  contact: 'contact_click',
+  instagram: 'social_click',
+  language: 'language_click',
+  partner: 'partner_click',
+  section: 'section_nav_click',
+  services: 'services_click'
+};
+
+function getCtaPosition(link) {
+  if (link.id === 'stickyBook') return 'sticky';
+  if (link.closest('.site-header')) return 'nav';
+  if (link.closest('.hero')) return 'hero';
+  if (link.closest('.press-section')) return 'epk';
+  if (link.closest('.events-section')) return 'events';
+  if (link.closest('.social-section')) return 'social';
+  if (link.closest('.site-footer')) return 'footer';
+  if (link.closest('.intro')) return 'intro';
+  return 'body';
+}
+
+function getLinkParams(link) {
+  return {
+    link_text: link.textContent.trim(),
+    link_url: link.href,
+    link_type: link.dataset.track,
+    page_language: document.documentElement.lang || 'en',
+    cta_position: getCtaPosition(link),
+    target_section: link.dataset.trackSection || '',
+    target_language: link.dataset.trackLanguage || '',
+    service_type: link.dataset.trackService || '',
+    transport_type: 'beacon'
+  };
+}
+
 function bindTrackedLinks() {
-  document.querySelectorAll('[data-track="book"]').forEach((link) => {
+  document.querySelectorAll('[data-track]').forEach((link) => {
     if (link.dataset.bound === '1') return;
     link.dataset.bound = '1';
     link.addEventListener('click', () => {
-      track('book_djjuan_click', {
-        link_url: link.href,
-        cta_position: link.id === 'stickyBook' ? 'sticky' : (link.closest('.hero') ? 'hero' : 'nav')
-      });
+      track(trackedEvents[link.dataset.track] || 'engagement_click', getLinkParams(link));
     });
   });
 }
