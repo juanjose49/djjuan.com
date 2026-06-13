@@ -16,12 +16,12 @@ The public site is intentionally static and deploys in the same style as the oth
 
 ## Website Positioning
 
-`djjuan.com` is the personal artist hub for DJ Juan. It should build trust, show the sound and event fit, and send booking traffic to Silver Spring Records.
+`djjuan.com` is the personal artist hub for DJ Juan. It should build trust, show the sound and event fit, and send booking traffic to the on-page TidyCal widget.
 
-Primary booking URL:
+Primary booking target:
 
 ```text
-https://silverspringrecords.com/booking.html
+https://djjuan.com/#booking
 ```
 
 ## Local Preview
@@ -72,9 +72,9 @@ Additional viable event-proof images were normalized, metadata-stripped, warm-gr
 - `images/epk/daytime-event-room-setup.jpeg`
 - `images/epk/dinner-room-setup.jpeg`
 
-All viable unique marketing images are included in the on-page Work section. Duplicate originals are not needed for deployment when an enhanced version is already stronger. `juan_profile.jpeg` and `juan_profile_square.png` were reviewed and excluded from the Work section because they read as casual/personal rather than event-DJ marketing.
+All viable unique marketing images are included in the on-page Gallery section. Duplicate originals are not needed for deployment when an enhanced version is already stronger. `juan_profile.jpeg` and `juan_profile_square.png` were reviewed and excluded from the Gallery section because they read as casual/personal rather than event-DJ marketing.
 
-Content note: `DJJuanSanEmeterioResume.pdf` is credible, but it reads like a formal career resume. The website now presents the EPK essentials directly on-page: artist bio, event fit, music range, production capabilities, highlight credit, booking link, contact email, and work images.
+Content note: `DJJuanSanEmeterioResume.pdf` is credible, but it reads like a formal career resume. The website now presents the planner-facing essentials directly on-page: artist bio, event fit, music range, production capabilities, highlight credit, direct booking, testimonials, and gallery images.
 
 ## Spanish Version
 

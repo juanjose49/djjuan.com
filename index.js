@@ -22,7 +22,7 @@ function getCtaPosition(link) {
   if (link.id === 'stickyBook') return 'sticky';
   if (link.closest('.site-header')) return 'nav';
   if (link.closest('.hero')) return 'hero';
-  if (link.closest('.press-section')) return 'epk';
+  if (link.closest('.gallery-section')) return 'gallery';
   if (link.closest('.events-section')) return 'events';
   if (link.closest('.social-section')) return 'social';
   if (link.closest('.site-footer')) return 'footer';
