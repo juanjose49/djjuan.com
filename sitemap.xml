@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://djjuan.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://djjuan.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://djjuan.com/es/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://djjuan.com/" />
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/juan-on-mixer-enhanced.png</image:loc>
+      <image:title>DJ Juan mixing portrait</image:title>
+      <image:caption>DJ Juan mixing with headphones in warm editorial event lighting.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/juan-formal-enhanced.png</image:loc>
+      <image:title>DJ Juan formal event portrait</image:title>
+      <image:caption>DJ Juan behind a professional controller at a formal indoor event.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/juan-on-stage-enhanced.png</image:loc>
+      <image:title>DJ Juan stage performance</image:title>
+      <image:caption>DJ Juan performing on stage in warm event lighting.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/formal-room-setup-enhanced.png</image:loc>
+      <image:title>Formal event DJ setup</image:title>
+      <image:caption>Formal indoor event room with DJ setup and guests.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/dinner-room-setup.jpeg</image:loc>
+      <image:title>Dinner room DJ setup</image:title>
+      <image:caption>Dinner event room from behind the DJ setup with lighting and guests seated.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/cocktail-hour-ceremony-setup.jpeg</image:loc>
+      <image:title>Cocktail hour and ceremony DJ support</image:title>
+      <image:caption>DJ setup with live string musicians during cocktail hour or ceremony support.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/daytime-event-room-setup.jpeg</image:loc>
+      <image:title>Daytime event DJ setup</image:title>
+      <image:caption>Daytime event room from behind the DJ controller with speakers and guests.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/dance-floor-pov-enhanced.png</image:loc>
+      <image:title>Dance floor from DJ point of view</image:title>
+      <image:caption>Dance floor from the DJ point of view with guests and DJ equipment.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://djjuan.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://djjuan.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://djjuan.com/es/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://djjuan.com/" />
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/juan-on-mixer-enhanced.png</image:loc>
+      <image:title>Retrato de DJ Juan mezclando</image:title>
+      <image:caption>DJ Juan mezclando con audífonos y luz editorial cálida de evento.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/juan-formal-enhanced.png</image:loc>
+      <image:title>Retrato formal de DJ Juan en evento</image:title>
+      <image:caption>DJ Juan detrás de un controlador profesional en un evento formal interior.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/dinner-room-setup.jpeg</image:loc>
+      <image:title>Setup de DJ para cena</image:title>
+      <image:caption>Salón de cena visto desde el setup de DJ con iluminación e invitados.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://djjuan.com/images/epk/dance-floor-pov-enhanced.png</image:loc>
+      <image:title>Pista de baile desde el punto de vista del DJ</image:title>
+      <image:caption>Pista de baile vista desde el DJ con invitados y equipo.</image:caption>
+    </image:image>
+  </url>
+</urlset>
