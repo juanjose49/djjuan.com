@@ -447,7 +447,7 @@ p{color:var(--muted)}
 .tidycal-embed{
   display:block;
   width:100%;
-  height:850px;
+  min-height:500px;
   border:1px solid var(--line);
   border-radius:8px;
   background:var(--paper);

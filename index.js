@@ -62,11 +62,32 @@ function updateStickyCta() {
   }
 }
 
+function bindTidyCalEmbed() {
+  const iframe = document.getElementById('tidycal-booking');
+  const script = document.getElementById('tidycal-resizer-script');
+  if (!iframe || !script) return;
+
+  const resizeToContent = () => {
+    if (typeof window.iFrameResize !== 'function' || iframe.iFrameResizer) return;
+
+    window.iFrameResize({
+      checkOrigin: false,
+      log: false,
+      minHeight: 500,
+      warningTimeout: 0
+    }, iframe);
+  };
+
+  resizeToContent();
+  script.addEventListener('load', resizeToContent, { once: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
   bindTrackedLinks();
+  bindTidyCalEmbed();
   updateStickyCta();
 
   window.addEventListener('scroll', updateStickyCta, { passive: true });
