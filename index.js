@@ -31,13 +31,15 @@ function applyTheme(theme) {
     ? (isDark ? 'Cambiar al modo claro' : 'Cambiar al modo oscuro')
     : (isDark ? 'Switch to light mode' : 'Switch to dark mode');
   const toggle = document.querySelector('.theme-toggle');
-  const themeColor = document.querySelector('meta[name="theme-color"]');
+  const themeColors = document.querySelectorAll('meta[name="theme-color"]');
   const bookingIframe = document.getElementById('tidycal-booking');
 
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
 
-  if (themeColor) themeColor.content = isDark ? '#0f1113' : '#fbfaf7';
+  themeColors.forEach((meta) => {
+    meta.content = isDark ? '#0f1113' : '#fbfaf7';
+  });
   if (bookingIframe) {
     const bookingSrc = isDark ? bookingIframe.dataset.darkSrc : bookingIframe.dataset.lightSrc;
     if (bookingSrc && bookingIframe.getAttribute('src') !== bookingSrc) {

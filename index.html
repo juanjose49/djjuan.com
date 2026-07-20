@@ -22,7 +22,9 @@
   <meta name="description" content="DJ Juan is a DMV wedding and private event DJ serving Silver Spring, Maryland, Washington DC, and Northern Virginia with polished open-format sets, live sound, and event production." />
   <meta name="geo.region" content="US-MD" />
   <meta name="geo.placename" content="Silver Spring" />
-  <meta name="theme-color" content="#fbfaf7" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f1113" media="(prefers-color-scheme: dark)" />
   <script>
     (() => {
       const key = 'djjuan-theme';
@@ -38,7 +40,9 @@
 
       document.documentElement.dataset.theme = theme;
       document.documentElement.style.colorScheme = theme;
-      document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0f1113' : '#fbfaf7';
+      document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+        meta.content = theme === 'dark' ? '#0f1113' : '#fbfaf7';
+      });
     })();
   </script>
 
@@ -63,7 +67,7 @@
   <link rel="preload" href="images/epk/juan-on-mixer-enhanced-960.webp" as="image" type="image/webp"
         imagesrcset="images/epk/juan-on-mixer-enhanced-480.webp 480w, images/epk/juan-on-mixer-enhanced-960.webp 960w, images/epk/juan-on-mixer-enhanced.webp 1254w"
         imagesizes="100vw" />
-  <link rel="stylesheet" href="index.css?v=20260719-no-sticky" />
+  <link rel="stylesheet" href="index.css?v=20260719-ios-bars" />
 
   <script type="application/ld+json">
   {
@@ -342,6 +346,6 @@
     <small>&copy; <span id="year"></span> DJ Juan. <a href="es/" lang="es" hreflang="es" data-track="language" data-track-language="es">Español</a></small>
   </footer>
 
-  <script src="index.js?v=20260719-no-sticky" defer></script>
+  <script src="index.js?v=20260719-ios-bars" defer></script>
 </body>
 </html>
