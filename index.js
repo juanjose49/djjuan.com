@@ -93,7 +93,6 @@ const trackedEvents = {
 };
 
 function getCtaPosition(link) {
-  if (link.id === 'stickyBook') return 'sticky';
   if (link.closest('.site-header')) return 'nav';
   if (link.closest('.hero')) return 'hero';
   if (link.closest('.gallery-section')) return 'gallery';
@@ -128,14 +127,6 @@ function bindTrackedLinks() {
   });
 }
 
-function updateStickyCta() {
-  if (window.scrollY > 28) {
-    document.body.classList.add('cta-visible');
-  } else {
-    document.body.classList.remove('cta-visible');
-  }
-}
-
 function bindTidyCalEmbed() {
   const iframe = document.getElementById('tidycal-booking');
   const script = document.getElementById('tidycal-resizer-script');
@@ -163,8 +154,4 @@ document.addEventListener('DOMContentLoaded', () => {
   bindThemeToggle();
   bindTrackedLinks();
   bindTidyCalEmbed();
-  updateStickyCta();
-
-  window.addEventListener('scroll', updateStickyCta, { passive: true });
-  window.addEventListener('resize', updateStickyCta, { passive: true });
 });

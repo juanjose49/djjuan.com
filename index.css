@@ -161,7 +161,6 @@ p{color:var(--muted)}
 }
 .nav-cta:hover,
 .btn:hover,
-.cta-sticky:hover,
 .text-link:hover{
   text-decoration:none;
 }
@@ -537,40 +536,10 @@ p{color:var(--muted)}
   background:var(--paper);
 }
 
-.cta-sticky{
-  position:fixed;
-  left:50%;
-  bottom:calc(16px + env(safe-area-inset-bottom));
-  z-index:60;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:48px;
-  padding:.78rem 1.08rem;
-  color:#141414;
-  background:var(--gold);
-  border-radius:999px;
-  box-shadow:0 14px 34px rgba(0,0,0,.24);
-  font-weight:900;
-  white-space:nowrap;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transform:translate(-50%, 140%);
-  transition:opacity .22s ease, transform .22s ease, visibility .22s ease;
-}
-body.cta-visible .cta-sticky{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-  transform:translate(-50%, 0);
-}
-
 .brand:focus-visible,
 .top-actions a:focus-visible,
 .theme-toggle:focus-visible,
 .btn:focus-visible,
-.cta-sticky:focus-visible,
 .text-link:focus-visible,
 .outline-link:focus-visible{
   outline:3px solid var(--gold);
@@ -691,5 +660,4 @@ body.cta-visible .cta-sticky{
 
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
-  .cta-sticky{transition:none}
 }
