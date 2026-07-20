@@ -44,6 +44,10 @@ Deploy the root static files and `images/` folder to the web host for `djjuan.co
 
 The site uses relative asset paths for local preview compatibility and absolute canonical/social URLs for crawl metadata.
 
+## Color Theme
+
+The site defaults to the visitor's operating-system light or dark preference. The header toggle lets the visitor override that choice and stores the selection in `localStorage` under `djjuan-theme`, shared by the English and Spanish pages. OS theme changes continue to update the site until the visitor makes an explicit selection. The booking iframe also switches between the committed light-mode embed URL and the dark-mode schedule URL.
+
 Brand assets:
 
 - `images/brand/dj-juan-logo.png` is the header logo.

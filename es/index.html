@@ -22,7 +22,25 @@
   <meta name="description" content="DJ Juan es un DJ para bodas y eventos privados en Silver Spring, Maryland, Washington DC y Northern Virginia, con mezclas open-format, sonido en vivo y producción de eventos." />
   <meta name="geo.region" content="US-MD" />
   <meta name="geo.placename" content="Silver Spring" />
-  <meta name="theme-color" content="#101214" />
+  <meta name="theme-color" content="#fbfaf7" />
+  <script>
+    (() => {
+      const key = 'djjuan-theme';
+      let savedTheme = null;
+
+      try {
+        savedTheme = localStorage.getItem(key);
+      } catch (_) {}
+
+      const theme = savedTheme === 'dark' || savedTheme === 'light'
+        ? savedTheme
+        : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0f1113' : '#fbfaf7';
+    })();
+  </script>
 
   <meta property="og:title" content="DJ Juan | DJ para bodas y eventos privados en el DMV" />
   <meta property="og:description" content="El sitio personal de DJ Juan: bodas, eventos privados, energía de pista y reservas directas." />
@@ -46,7 +64,7 @@
   <link rel="preload" href="../images/epk/juan-on-mixer-enhanced-960.webp" as="image" type="image/webp"
         imagesrcset="../images/epk/juan-on-mixer-enhanced-480.webp 480w, ../images/epk/juan-on-mixer-enhanced-960.webp 960w, ../images/epk/juan-on-mixer-enhanced.webp 1254w"
         imagesizes="100vw" />
-  <link rel="stylesheet" href="../index.css?v=20260718-tidycal" />
+  <link rel="stylesheet" href="../index.css?v=20260719-theme" />
 
   <script type="application/ld+json">
   {
@@ -116,6 +134,10 @@
       <a href="#events" data-track="section" data-track-section="events">Eventos</a>
       <a href="https://www.instagram.com/dj.juan.dmv/" rel="me noopener" data-track="instagram">Instagram</a>
       <a href="../" lang="en" hreflang="en" data-track="language" data-track-language="en">English</a>
+      <button class="theme-toggle" type="button" aria-label="Cambiar al modo oscuro" aria-pressed="false" title="Cambiar al modo oscuro">
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
+      </button>
       <a class="nav-cta" href="#booking" data-track="booking">Reservar</a>
     </nav>
   </header>
@@ -307,7 +329,9 @@
       <iframe
         id="tidycal-booking"
         class="tidycal-embed"
-        src="https://schedule.djjuan.com/meet-greet-1vr8ogy?embed=1"
+        src="https://schedule.djjuan.com/meet-greet-1vr8ogy-m5n072x"
+        data-light-src="https://schedule.djjuan.com/meet-greet-1vr8ogy-m5n072x"
+        data-dark-src="https://schedule.djjuan.com/meet-greet-1vr8ogy"
         title="Agenda una llamada inicial con DJ Juan"
         loading="lazy"
         allow="payment"
@@ -320,6 +344,6 @@
     <small>&copy; <span id="year"></span> DJ Juan. <a href="../" lang="en" hreflang="en" data-track="language" data-track-language="en">English</a></small>
   </footer>
 
-  <script src="../index.js?v=20260718-tidycal" defer></script>
+  <script src="../index.js?v=20260719-theme-calendar" defer></script>
 </body>
 </html>
