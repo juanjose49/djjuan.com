@@ -149,6 +149,197 @@ function bindTidyCalEmbed() {
   script.addEventListener('load', resizeToContent, { once: true });
 }
 
+const estimateRates = {
+  special: 199,
+  wedding: 299
+};
+
+function formatEstimateCurrency(amount, language) {
+  return new Intl.NumberFormat(language === 'es' ? 'es-US' : 'en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+    maximumFractionDigits: 2
+  }).format(amount);
+}
+
+function encodeEstimateDetails(details) {
+  const bytes = new TextEncoder().encode(JSON.stringify(details));
+  let binary = '';
+
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+
+  return btoa(binary);
+}
+
+function bindEstimateForm() {
+  const form = document.getElementById('estimate-form');
+  if (!form) return;
+
+  const language = document.documentElement.lang.startsWith('es') ? 'es' : 'en';
+  const totalElement = document.getElementById('estimate-total');
+  const mathElement = document.getElementById('estimate-math');
+  const titleElement = document.getElementById('live-estimate-title');
+  const includedElement = document.getElementById('estimate-includes');
+  const dateInput = document.getElementById('event-date');
+  const strings = language === 'es'
+    ? {
+        special: 'Evento especial',
+        wedding: 'Boda',
+        hour: 'hora',
+        hours: 'horas',
+        items: {
+          speakers: 'Hasta 4 potentes bocinas PA',
+          microphones: '2 micrófonos inalámbricos',
+          mc: 'DJ Juan como MC',
+          daytime: 'Efecto de burbujas para un evento de día, donde esté permitido',
+          nighttime: 'Iluminación de pista y haze para un evento de noche, donde estén permitidos',
+          metro: 'Traslado y servicio en el área metropolitana del DMV',
+          outdoor: 'Energía proporcionada por el DJ para audio e iluminación al aire libre',
+          collaboration: 'Colaboración detallada en el timeline y las selecciones musicales',
+          backup: 'Protección garantizada con energía de respaldo para el audio y la iluminación del DJ'
+        }
+      }
+    : {
+        special: 'Special event',
+        wedding: 'Wedding',
+        hour: 'hour',
+        hours: 'hours',
+        items: {
+          speakers: 'Up to 4 powerful PA speakers',
+          microphones: '2 wireless microphones',
+          mc: 'DJ Juan as MC',
+          daytime: 'Bubble effect for a daytime event, where permitted',
+          nighttime: 'Dance-floor lighting and haze for a nighttime event, where permitted',
+          metro: 'Travel and service anywhere in the Metro DMV',
+          outdoor: 'DJ-provided outdoor power for audio and lighting',
+          collaboration: 'Higher-touch collaboration on the timeline and music selections',
+          backup: 'Guaranteed backup-power protection for DJ audio and lighting'
+        }
+      };
+
+  if (dateInput) {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    dateInput.min = `${today.getFullYear()}-${month}-${day}`;
+  }
+
+  const getCurrentSelections = () => {
+    const data = new FormData(form);
+    const eventType = data.get('eventType') === 'wedding' ? 'wedding' : 'special';
+    const eventTiming = data.get('eventTiming') === 'nighttime' ? 'nighttime' : 'daytime';
+    const venueSetting = data.get('venueSetting') === 'outdoor' ? 'outdoor' : 'indoor';
+    const durationValue = Number(data.get('durationHours'));
+    const durationHours = Number.isFinite(durationValue) && durationValue > 0 ? durationValue : 0;
+
+    return { eventType, eventTiming, venueSetting, durationHours };
+  };
+
+  const updateEstimate = () => {
+    const { eventType, eventTiming, venueSetting, durationHours } = getCurrentSelections();
+    const rate = estimateRates[eventType];
+    const total = durationHours * rate;
+    const durationLabel = durationHours === 1 ? strings.hour : strings.hours;
+    const items = [
+      strings.items.speakers,
+      strings.items.microphones,
+      strings.items.mc
+    ];
+
+    if (eventType === 'wedding') {
+      items.push(strings.items.collaboration, strings.items.backup);
+    }
+
+    items.push(eventTiming === 'nighttime' ? strings.items.nighttime : strings.items.daytime);
+    if (venueSetting === 'outdoor') items.push(strings.items.outdoor);
+    items.push(strings.items.metro);
+
+    titleElement.textContent = strings[eventType];
+    totalElement.textContent = formatEstimateCurrency(total, language);
+    mathElement.textContent = `${durationHours || 0} ${durationLabel} × ${formatEstimateCurrency(rate, language)}/${language === 'es' ? 'hora' : 'hour'}`;
+    includedElement.replaceChildren(...items.map((item) => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      return li;
+    }));
+
+    form.querySelectorAll('.package-row').forEach((row) => {
+      row.classList.toggle('is-selected', Boolean(row.querySelector('input:checked')));
+    });
+  };
+
+  form.querySelectorAll('.package-row').forEach((row) => {
+    row.addEventListener('click', (event) => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLLabelElement) return;
+      const radio = row.querySelector('input[type="radio"]');
+      if (radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  });
+
+  form.addEventListener('input', updateEstimate);
+  form.addEventListener('change', updateEstimate);
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const { eventType, eventTiming, venueSetting, durationHours } = getCurrentSelections();
+    const details = {
+      version: 2,
+      pricingVersion: '2026-07-26',
+      language,
+      eventType,
+      eventName: String(data.get('eventName') || '').trim(),
+      eventDate: String(data.get('eventDate') || ''),
+      startTime: String(data.get('startTime') || ''),
+      durationHours,
+      eventTiming,
+      venueSetting,
+      serviceLanguage: String(data.get('serviceLanguage') || ''),
+      eventMoments: data.getAll('eventMoments').map(String),
+      venueName: String(data.get('venueName') || '').trim(),
+      venueAddress: String(data.get('venueAddress') || '').trim(),
+      guestCount: data.get('guestCount') ? Number(data.get('guestCount')) : null,
+      clientName: String(data.get('clientName') || '').trim(),
+      partnerName: String(data.get('partnerName') || '').trim(),
+      email: String(data.get('email') || '').trim(),
+      phone: String(data.get('phone') || '').trim(),
+      coordinatorName: String(data.get('coordinatorName') || '').trim(),
+      coordinatorContact: String(data.get('coordinatorContact') || '').trim(),
+      musicPreferences: String(data.get('musicPreferences') || '').trim(),
+      doNotPlay: String(data.get('doNotPlay') || '').trim(),
+      specialMoments: String(data.get('specialMoments') || '').trim(),
+      productionInterests: data.getAll('productionInterests').map(String),
+      performerDetails: String(data.get('performerDetails') || '').trim(),
+      logisticsNotes: String(data.get('logisticsNotes') || '').trim(),
+      notes: String(data.get('notes') || '').trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    track('estimate_generated', {
+      event_type: eventType,
+      event_timing: eventTiming,
+      venue_setting: venueSetting,
+      duration_hours: durationHours,
+      estimate_total: durationHours * estimateRates[eventType],
+      event_moment_count: details.eventMoments.length,
+      production_interest_count: details.productionInterests.length,
+      page_language: language,
+      transport_type: 'beacon'
+    });
+
+    window.location.assign(`/estimate?details=${encodeURIComponent(encodeEstimateDetails(details))}`);
+  });
+
+  updateEstimate();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
@@ -156,4 +347,5 @@ document.addEventListener('DOMContentLoaded', () => {
   bindThemeToggle();
   bindTrackedLinks();
   bindTidyCalEmbed();
+  bindEstimateForm();
 });

@@ -68,7 +68,7 @@
   <link rel="preload" href="../images/epk/juan-on-mixer-enhanced-960.webp" as="image" type="image/webp"
         imagesrcset="../images/epk/juan-on-mixer-enhanced-480.webp 480w, ../images/epk/juan-on-mixer-enhanced-960.webp 960w, ../images/epk/juan-on-mixer-enhanced.webp 1254w"
         imagesizes="100vw" />
-  <link rel="stylesheet" href="../index.css?v=20260719-ios-bars" />
+  <link rel="stylesheet" href="../index.css?v=20260726-contract-details" />
 
   <script type="application/ld+json">
   {
@@ -323,6 +323,260 @@
       </div>
     </section>
 
+    <section id="pricing" class="pricing-section" aria-labelledby="pricing-title">
+      <div class="section-heading">
+        <p class="eyebrow">Precio instantáneo</p>
+        <h2 id="pricing-title">Crea un estimado claro para tu evento.</h2>
+        <p>Elige el servicio, agrega los detalles del evento y consulta el precio estimado completo antes de programar una conversación.</p>
+      </div>
+
+      <form id="estimate-form" class="estimate-form" action="/estimate" method="get">
+        <fieldset class="form-section package-fieldset">
+          <legend>1. Elige el servicio para tu evento</legend>
+          <div class="package-table-wrap">
+            <table class="package-table">
+              <thead>
+                <tr>
+                  <th scope="col">Elegir</th>
+                  <th scope="col">Servicio</th>
+                  <th scope="col">Tarifa</th>
+                  <th scope="col">Sonido y micrófonos</th>
+                  <th scope="col">Planificación y MC</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="package-row is-selected">
+                  <td>
+                    <input id="event-special-es" type="radio" name="eventType" value="special" checked />
+                  </td>
+                  <th scope="row">
+                    <label for="event-special-es">Evento especial</label>
+                  </th>
+                  <td><strong>$199/hora</strong></td>
+                  <td>Hasta 4 potentes bocinas PA y 2 micrófonos inalámbricos</td>
+                  <td>DJ Juan como MC para anuncios, brindis y el flujo del evento</td>
+                </tr>
+                <tr class="package-row">
+                  <td>
+                    <input id="event-wedding-es" type="radio" name="eventType" value="wedding" />
+                  </td>
+                  <th scope="row">
+                    <label for="event-wedding-es">Boda</label>
+                  </th>
+                  <td><strong>$299/hora</strong></td>
+                  <td>Hasta 4 potentes bocinas PA y 2 micrófonos inalámbricos</td>
+                  <td>Colaboración detallada en el timeline y la música, servicio de MC y protección garantizada con energía de respaldo</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="package-shared">Cada servicio incluye DJ profesional, traslado dentro del área metropolitana del DMV y montaje de equipo. Hay energía proporcionada por el DJ para audio e iluminación al aire libre.</p>
+        </fieldset>
+
+        <div class="estimator-layout">
+          <div class="estimator-questions">
+            <fieldset class="form-section">
+              <legend>2. Cuéntame sobre el evento</legend>
+              <div class="form-grid">
+                <label class="form-grid-wide">
+                  <span class="field-label">Nombre del evento o celebración <small>Opcional</small></span>
+                  <input name="eventName" type="text" maxlength="120" placeholder="Por ejemplo, la boda de Avery y Jordan" />
+                </label>
+                <label>
+                  <span class="field-label">Fecha del evento <small>Requerido</small></span>
+                  <input id="event-date" name="eventDate" type="date" required />
+                </label>
+                <label>
+                  <span class="field-label">Hora de inicio <small>Opcional</small></span>
+                  <input name="startTime" type="time" />
+                </label>
+                <label>
+                  <span class="field-label">Horas de cobertura <small>Requerido</small></span>
+                  <input name="durationHours" type="number" min="1" max="16" step="0.5" value="4" inputmode="decimal" required />
+                </label>
+                <label>
+                  <span class="field-label">Número estimado de invitados <small>Opcional</small></span>
+                  <input name="guestCount" type="number" min="1" max="2000" step="1" inputmode="numeric" placeholder="Opcional" />
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>3. Elige el estilo de producción</legend>
+              <div class="choice-grid">
+                <label class="choice-card">
+                  <input type="radio" name="eventTiming" value="daytime" checked />
+                  <span><strong>Evento de día</strong><small>Efecto de burbujas incluido donde lo permita el venue</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="eventTiming" value="nighttime" />
+                  <span><strong>Evento de noche</strong><small>Iluminación de pista y haze incluidos donde los permita el venue</small></span>
+                </label>
+              </div>
+              <div class="choice-grid choice-grid-compact">
+                <label class="choice-card">
+                  <input type="radio" name="venueSetting" value="indoor" checked />
+                  <span><strong>Venue interior</strong><small>Energía del venue en condiciones normales</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="venueSetting" value="outdoor" />
+                  <span><strong>Venue al aire libre</strong><small>Energía del DJ disponible para audio e iluminación</small></span>
+                </label>
+              </div>
+
+              <div class="preference-group">
+                <label class="select-label">
+                  <span class="field-label">Idioma para el MC <small>Opcional</small></span>
+                  <select name="serviceLanguage">
+                    <option value="">Por conversar</option>
+                    <option value="english">Inglés</option>
+                    <option value="spanish">Español</option>
+                    <option value="bilingual">Bilingüe, inglés y español</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="preference-group">
+                <p class="preference-label">Momentos que quieres que DJ Juan apoye <small>Elige los que apliquen</small></p>
+                <div class="chip-grid">
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="ceremony" /><span>Ceremonia</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="cocktail" /><span>Hora del cóctel</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="dinner" /><span>Música de cena</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="introductions" /><span>Presentaciones</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="toasts" /><span>Brindis y discursos</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="special_dances" /><span>Bailes especiales</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="open_dancing" /><span>Baile abierto</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="live_performance" /><span>Artista en vivo</span></label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>4. Agrega los detalles del venue y contacto</legend>
+              <div class="form-grid">
+                <label>
+                  <span class="field-label">Nombre del venue <small>Opcional</small></span>
+                  <input name="venueName" type="text" maxlength="120" autocomplete="organization" placeholder="Puede quedar pendiente" />
+                </label>
+                <label>
+                  <span class="field-label">Dirección o ciudad del venue <small>Opcional</small></span>
+                  <input name="venueAddress" type="text" maxlength="180" autocomplete="street-address" placeholder="Puede quedar pendiente" />
+                </label>
+                <label>
+                  <span class="field-label">Tu nombre <small>Requerido</small></span>
+                  <input name="clientName" type="text" maxlength="120" autocomplete="name" required />
+                </label>
+                <label>
+                  <span class="field-label">Pareja o coanfitrión <small>Opcional</small></span>
+                  <input name="partnerName" type="text" maxlength="120" autocomplete="name" placeholder="Aparecerá contigo en la propuesta" />
+                </label>
+                <label>
+                  <span class="field-label">Email <small>Requerido</small></span>
+                  <input name="email" type="email" maxlength="160" autocomplete="email" required />
+                </label>
+                <label>
+                  <span class="field-label">Teléfono <small>Opcional</small></span>
+                  <input name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="Opcional" />
+                </label>
+              </div>
+            </fieldset>
+
+            <details class="planning-details">
+              <summary>
+                <span><strong>Agrega música, timeline y personas clave</strong><small>Detalles opcionales para personalizar la propuesta</small></span>
+              </summary>
+              <div class="planning-details-body">
+                <div class="form-grid">
+                  <label>
+                    <span class="field-label">Coordinador o contacto en el venue <small>Opcional</small></span>
+                    <input name="coordinatorName" type="text" maxlength="120" />
+                  </label>
+                  <label>
+                    <span class="field-label">Contacto del coordinador <small>Opcional</small></span>
+                    <input name="coordinatorContact" type="text" maxlength="160" placeholder="Teléfono o email" />
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Dirección musical y canciones imprescindibles <small>Opcional</small></span>
+                    <textarea name="musicPreferences" rows="3" maxlength="1000" placeholder="Géneros, artistas, canciones o el ambiente que quieres"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Música que no quieres <small>Opcional</small></span>
+                    <textarea name="doNotPlay" rows="2" maxlength="600" placeholder="Canciones, artistas o estilos que se deben evitar"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Momentos especiales o ediciones de canciones <small>Opcional</small></span>
+                    <textarea name="specialMoments" rows="3" maxlength="1000" placeholder="Primer baile, bailes familiares, presentaciones, anuncios o timing personalizado"></textarea>
+                  </label>
+                </div>
+              </div>
+            </details>
+
+            <details class="planning-details">
+              <summary>
+                <span><strong>Agrega producción y notas del venue</strong><small>Los detalles opcionales se pueden confirmar después</small></span>
+              </summary>
+              <div class="planning-details-body">
+                <div class="preference-group preference-group-first">
+                  <p class="preference-label">Intereses de producción <small>Sujetos a la aprobación del venue</small></p>
+                  <div class="chip-grid">
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="two_zones" /><span>Segunda zona de audio</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="karaoke" /><span>Karaoke</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="bubbles" /><span>Burbujas</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="lighting" /><span>Iluminación de evento</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="haze" /><span>Haze o niebla</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="lasers" /><span>Efectos láser</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="performer_audio" /><span>Audio para un artista</span></label>
+                  </div>
+                </div>
+                <div class="form-grid planning-form-grid">
+                  <label class="form-grid-wide">
+                    <span class="field-label">Artistas en vivo o notas especiales del programa <small>Opcional</small></span>
+                    <textarea name="performerDetails" rows="3" maxlength="1000" placeholder="Artista, hora aproximada, duración y necesidades de equipo"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Estacionamiento, entrada, energía o clima <small>Opcional</small></span>
+                    <textarea name="logisticsNotes" rows="3" maxlength="1000" placeholder="No incluyas códigos de puerta ni otra información privada de acceso"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">¿Algo más que quieras reflejar en el plan? <small>Opcional</small></span>
+                    <textarea name="notes" rows="3" maxlength="1000"></textarea>
+                  </label>
+                </div>
+              </div>
+            </details>
+
+            <label class="terms-check">
+              <input name="termsAccepted" type="checkbox" required />
+              <span>Entiendo que este precio aplica a venues accesibles según ADA, bajo condiciones normales de entrada, montaje, operación, clima y venue.</span>
+            </label>
+          </div>
+
+          <aside class="estimate-summary" aria-live="polite" aria-label="Estimado de precio en vivo">
+            <p class="eyebrow">Tu estimado</p>
+            <h3 id="live-estimate-title">Evento especial</h3>
+            <p class="estimate-total" id="estimate-total">$796</p>
+            <p id="estimate-math">4 horas × $199/hora</p>
+            <div class="estimate-includes">
+              <strong>Incluye</strong>
+              <ul id="estimate-includes">
+                <li>Hasta 4 bocinas PA</li>
+                <li>2 micrófonos inalámbricos</li>
+                <li>DJ Juan como MC</li>
+                <li>Efecto de burbujas para un evento de día</li>
+                <li>Servicio en el área metropolitana del DMV</li>
+              </ul>
+            </div>
+            <button class="btn estimate-submit" type="submit">Crear mi propuesta</button>
+            <p class="estimate-privacy">El enlace de tu propuesta contiene la información ingresada aquí. Compártelo solo con las personas que deben ver los detalles del evento.</p>
+          </aside>
+        </div>
+      </form>
+
+      <p class="pricing-disclaimer">
+        El precio estimado es válido solo para venues accesibles según ADA y condiciones normales del evento. La propuesta generada no es una reservación. La disponibilidad y el alcance final se confirman directamente con DJ Juan.
+      </p>
+    </section>
+
     <section id="booking" class="booking-section" aria-labelledby="booking-title">
       <div class="section-heading">
         <p class="eyebrow">Reserva</p>
@@ -346,6 +600,6 @@
     <small>&copy; <span id="year"></span> DJ Juan. <a href="../" lang="en" hreflang="en" data-track="language" data-track-language="en">English</a></small>
   </footer>
 
-  <script src="../index.js?v=20260719-ios-bars" defer></script>
+  <script src="../index.js?v=20260726-contract-details" defer></script>
 </body>
 </html>

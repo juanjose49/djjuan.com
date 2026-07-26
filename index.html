@@ -67,7 +67,7 @@
   <link rel="preload" href="images/epk/juan-on-mixer-enhanced-960.webp" as="image" type="image/webp"
         imagesrcset="images/epk/juan-on-mixer-enhanced-480.webp 480w, images/epk/juan-on-mixer-enhanced-960.webp 960w, images/epk/juan-on-mixer-enhanced.webp 1254w"
         imagesizes="100vw" />
-  <link rel="stylesheet" href="index.css?v=20260719-ios-bars" />
+  <link rel="stylesheet" href="index.css?v=20260726-contract-details" />
 
   <script type="application/ld+json">
   {
@@ -323,6 +323,260 @@
       </div>
     </section>
 
+    <section id="pricing" class="pricing-section" aria-labelledby="pricing-title">
+      <div class="section-heading">
+        <p class="eyebrow">Instant pricing</p>
+        <h2 id="pricing-title">Build a clear estimate for your event.</h2>
+        <p>Choose your service, add the event details, and see the complete estimated price before scheduling a conversation.</p>
+      </div>
+
+      <form id="estimate-form" class="estimate-form" action="/estimate" method="get">
+        <fieldset class="form-section package-fieldset">
+          <legend>1. Choose your event service</legend>
+          <div class="package-table-wrap">
+            <table class="package-table">
+              <thead>
+                <tr>
+                  <th scope="col">Select</th>
+                  <th scope="col">Service</th>
+                  <th scope="col">Rate</th>
+                  <th scope="col">Sound and microphones</th>
+                  <th scope="col">Planning and MC</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="package-row is-selected">
+                  <td>
+                    <input id="event-special" type="radio" name="eventType" value="special" checked />
+                  </td>
+                  <th scope="row">
+                    <label for="event-special">Special event</label>
+                  </th>
+                  <td><strong>$199/hour</strong></td>
+                  <td>Up to 4 powerful PA speakers and 2 wireless microphones</td>
+                  <td>DJ Juan as MC for announcements, toasts, and event flow</td>
+                </tr>
+                <tr class="package-row">
+                  <td>
+                    <input id="event-wedding" type="radio" name="eventType" value="wedding" />
+                  </td>
+                  <th scope="row">
+                    <label for="event-wedding">Wedding</label>
+                  </th>
+                  <td><strong>$299/hour</strong></td>
+                  <td>Up to 4 powerful PA speakers and 2 wireless microphones</td>
+                  <td>Higher-touch collaboration on the timeline and music, MC service, plus guaranteed backup-power protection</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="package-shared">Every service includes professional DJ performance, Metro DMV travel, and equipment setup. DJ-provided outdoor power is available for audio and lighting.</p>
+        </fieldset>
+
+        <div class="estimator-layout">
+          <div class="estimator-questions">
+            <fieldset class="form-section">
+              <legend>2. Tell me about the event</legend>
+              <div class="form-grid">
+                <label class="form-grid-wide">
+                  <span class="field-label">Event or celebration name <small>Optional</small></span>
+                  <input name="eventName" type="text" maxlength="120" placeholder="For example, Avery & Jordan's wedding" />
+                </label>
+                <label>
+                  <span class="field-label">Event date <small>Required</small></span>
+                  <input id="event-date" name="eventDate" type="date" required />
+                </label>
+                <label>
+                  <span class="field-label">Start time <small>Optional</small></span>
+                  <input name="startTime" type="time" />
+                </label>
+                <label>
+                  <span class="field-label">Coverage hours <small>Required</small></span>
+                  <input name="durationHours" type="number" min="1" max="16" step="0.5" value="4" inputmode="decimal" required />
+                </label>
+                <label>
+                  <span class="field-label">Estimated guest count <small>Optional</small></span>
+                  <input name="guestCount" type="number" min="1" max="2000" step="1" inputmode="numeric" placeholder="Optional" />
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>3. Choose the production style</legend>
+              <div class="choice-grid">
+                <label class="choice-card">
+                  <input type="radio" name="eventTiming" value="daytime" checked />
+                  <span><strong>Daytime event</strong><small>Bubble effect included where the venue permits it</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="eventTiming" value="nighttime" />
+                  <span><strong>Nighttime event</strong><small>Dance-floor lighting and haze included where the venue permits them</small></span>
+                </label>
+              </div>
+              <div class="choice-grid choice-grid-compact">
+                <label class="choice-card">
+                  <input type="radio" name="venueSetting" value="indoor" checked />
+                  <span><strong>Indoor venue</strong><small>Venue power under normal conditions</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="venueSetting" value="outdoor" />
+                  <span><strong>Outdoor venue</strong><small>DJ-provided power available for audio and lighting</small></span>
+                </label>
+              </div>
+
+              <div class="preference-group">
+                <label class="select-label">
+                  <span class="field-label">Hosting language <small>Optional</small></span>
+                  <select name="serviceLanguage">
+                    <option value="">To be discussed</option>
+                    <option value="english">English</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="bilingual">Bilingual English and Spanish</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="preference-group">
+                <p class="preference-label">Moments you would like DJ Juan to support <small>Choose any</small></p>
+                <div class="chip-grid">
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="ceremony" /><span>Ceremony</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="cocktail" /><span>Cocktail hour</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="dinner" /><span>Dinner music</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="introductions" /><span>Introductions</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="toasts" /><span>Toasts and speeches</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="special_dances" /><span>Special dances</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="open_dancing" /><span>Open dancing</span></label>
+                  <label class="check-chip"><input type="checkbox" name="eventMoments" value="live_performance" /><span>Live performer</span></label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>4. Add venue and contact details</legend>
+              <div class="form-grid">
+                <label>
+                  <span class="field-label">Venue name <small>Optional</small></span>
+                  <input name="venueName" type="text" maxlength="120" autocomplete="organization" placeholder="TBD is okay" />
+                </label>
+                <label>
+                  <span class="field-label">Venue address or city <small>Optional</small></span>
+                  <input name="venueAddress" type="text" maxlength="180" autocomplete="street-address" placeholder="TBD is okay" />
+                </label>
+                <label>
+                  <span class="field-label">Your name <small>Required</small></span>
+                  <input name="clientName" type="text" maxlength="120" autocomplete="name" required />
+                </label>
+                <label>
+                  <span class="field-label">Partner or co-host <small>Optional</small></span>
+                  <input name="partnerName" type="text" maxlength="120" autocomplete="name" placeholder="Shown with you on the proposal" />
+                </label>
+                <label>
+                  <span class="field-label">Email <small>Required</small></span>
+                  <input name="email" type="email" maxlength="160" autocomplete="email" required />
+                </label>
+                <label>
+                  <span class="field-label">Phone <small>Optional</small></span>
+                  <input name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="Optional" />
+                </label>
+              </div>
+            </fieldset>
+
+            <details class="planning-details">
+              <summary>
+                <span><strong>Add music, timeline, and key people</strong><small>Optional details that help personalize the proposal</small></span>
+              </summary>
+              <div class="planning-details-body">
+                <div class="form-grid">
+                  <label>
+                    <span class="field-label">Coordinator or onsite contact <small>Optional</small></span>
+                    <input name="coordinatorName" type="text" maxlength="120" />
+                  </label>
+                  <label>
+                    <span class="field-label">Coordinator contact <small>Optional</small></span>
+                    <input name="coordinatorContact" type="text" maxlength="160" placeholder="Phone or email" />
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Music direction and must-plays <small>Optional</small></span>
+                    <textarea name="musicPreferences" rows="3" maxlength="1000" placeholder="Favorite genres, artists, songs, or the feeling you want"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Do-not-play notes <small>Optional</small></span>
+                    <textarea name="doNotPlay" rows="2" maxlength="600" placeholder="Songs, artists, or styles to avoid"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Special moments or song edits <small>Optional</small></span>
+                    <textarea name="specialMoments" rows="3" maxlength="1000" placeholder="First dance, parent dances, introductions, announcements, or custom timing"></textarea>
+                  </label>
+                </div>
+              </div>
+            </details>
+
+            <details class="planning-details">
+              <summary>
+                <span><strong>Add production and venue notes</strong><small>Optional details can be confirmed later</small></span>
+              </summary>
+              <div class="planning-details-body">
+                <div class="preference-group preference-group-first">
+                  <p class="preference-label">Production interests <small>Subject to venue approval</small></p>
+                  <div class="chip-grid">
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="two_zones" /><span>Second audio zone</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="karaoke" /><span>Karaoke</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="bubbles" /><span>Bubbles</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="lighting" /><span>Event lighting</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="haze" /><span>Haze or fog</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="lasers" /><span>Laser effects</span></label>
+                    <label class="check-chip"><input type="checkbox" name="productionInterests" value="performer_audio" /><span>Audio for a performer</span></label>
+                  </div>
+                </div>
+                <div class="form-grid planning-form-grid">
+                  <label class="form-grid-wide">
+                    <span class="field-label">Live performers or special program notes <small>Optional</small></span>
+                    <textarea name="performerDetails" rows="3" maxlength="1000" placeholder="Performer, approximate time, set length, and equipment needs"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Parking, load-in, power, or weather notes <small>Optional</small></span>
+                    <textarea name="logisticsNotes" rows="3" maxlength="1000" placeholder="Do not include door codes or other private access information"></textarea>
+                  </label>
+                  <label class="form-grid-wide">
+                    <span class="field-label">Anything else you want reflected in the plan? <small>Optional</small></span>
+                    <textarea name="notes" rows="3" maxlength="1000"></textarea>
+                  </label>
+                </div>
+              </div>
+            </details>
+
+            <label class="terms-check">
+              <input name="termsAccepted" type="checkbox" required />
+              <span>I understand this pricing applies to ADA-accessible venues under normal load-in, setup, operating, weather, and venue conditions.</span>
+            </label>
+          </div>
+
+          <aside class="estimate-summary" aria-live="polite" aria-label="Live price estimate">
+            <p class="eyebrow">Your estimate</p>
+            <h3 id="live-estimate-title">Special event</h3>
+            <p class="estimate-total" id="estimate-total">$796</p>
+            <p id="estimate-math">4 hours × $199/hour</p>
+            <div class="estimate-includes">
+              <strong>Included</strong>
+              <ul id="estimate-includes">
+                <li>Up to 4 PA speakers</li>
+                <li>2 wireless microphones</li>
+                <li>DJ Juan as MC</li>
+                <li>Bubble effect for a daytime event</li>
+                <li>Metro DMV service</li>
+              </ul>
+            </div>
+            <button class="btn estimate-submit" type="submit">Create my proposal</button>
+            <p class="estimate-privacy">Your proposal link contains the information entered here. Share it only with the people who should see your event details.</p>
+          </aside>
+        </div>
+      </form>
+
+      <p class="pricing-disclaimer">
+        Estimate pricing is valid only for ADA-accessible venues and normal event conditions. The generated proposal is not a reservation. Availability and final scope are confirmed directly with DJ Juan.
+      </p>
+    </section>
+
     <section id="booking" class="booking-section" aria-labelledby="booking-title">
       <div class="section-heading">
         <p class="eyebrow">Booking</p>
@@ -346,6 +600,6 @@
     <small>&copy; <span id="year"></span> DJ Juan. <a href="es/" lang="es" hreflang="es" data-track="language" data-track-language="es">Español</a></small>
   </footer>
 
-  <script src="index.js?v=20260719-ios-bars" defer></script>
+  <script src="index.js?v=20260726-contract-details" defer></script>
 </body>
 </html>
