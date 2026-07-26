@@ -45,7 +45,20 @@ https://djjuan.com/estimate?details=<base64-json>
 
 The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL.
 
-Proposal pages are marked `noindex`, send no referrer, and load no third-party scripts because the URL can contain contact and event details. Base64 is an encoding, not encryption, so proposal links should be shared only with intended recipients.
+Proposal pages are marked `noindex` and send no referrer. Analytics run inside the same-site `estimate/analytics.html` bridge, whose browser history and URL never contain the proposal payload. The bridge manually reports a sanitized `/estimate/` page location and accepts only allowlisted event names and parameters. This avoids GA4 enhanced measurement observing the `history.replaceState` calls that keep the latest share link in the address bar.
+
+Estimate events contain only service configuration, completion state, field names, and interaction types. Names, email addresses, phone numbers, venues, notes, field values, and share URLs are not sent. Base64 is an encoding, not encryption, so proposal links should still be shared only with intended recipients.
+
+Estimate analytics cover:
+
+- `page_view` and `estimate_viewed` for valid proposal visits
+- `estimate_invalid_viewed` for missing or invalid proposal payloads
+- `estimate_edit_started`, `estimate_field_updated`, and `estimate_section_opened`
+- `estimate_scroll_depth` at 50 and 90 percent
+- `estimate_link_copied`, `estimate_link_shared`, and `estimate_share_cancelled`
+- `estimate_printed`, `estimate_new_click`, and the existing `booking_click`
+
+For GA4 reporting, use `/estimate/` for the Pages and screens view and build a funnel from `estimate_generated` to `estimate_viewed`, then to `estimate_link_shared` or `booking_click`. Useful event-scoped custom dimensions are `event_type`, `event_timing`, `venue_setting`, `estimate_completion_status`, `estimate_field`, and `source_page`. `estimate_total` and `duration_hours` can be registered as custom metrics if numeric reporting is needed.
 
 ## Local Preview
 

@@ -1,6 +1,8 @@
 function track(eventName, params = {}) {
   try {
-    if (typeof gtag === 'function') {
+    if (typeof window.djJuanAnalyticsTrack === 'function') {
+      window.djJuanAnalyticsTrack(eventName, params);
+    } else if (typeof gtag === 'function') {
       gtag('event', eventName, params);
     } else if (window.dataLayer) {
       window.dataLayer.push({ event: eventName, ...params });
@@ -87,6 +89,7 @@ function bindThemeToggle() {
 const trackedEvents = {
   booking: 'booking_click',
   contact: 'contact_click',
+  estimate_new: 'estimate_new_click',
   instagram: 'social_click',
   language: 'language_click',
   partner: 'partner_click',
@@ -115,6 +118,7 @@ function getLinkParams(link) {
     target_section: link.dataset.trackSection || '',
     target_language: link.dataset.trackLanguage || '',
     service_type: link.dataset.trackService || '',
+    source_page: document.body.classList.contains('proposal-body') ? 'estimate' : 'site',
     transport_type: 'beacon'
   };
 }

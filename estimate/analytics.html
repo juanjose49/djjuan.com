@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Estimate analytics</title>
+
+</head>
+<body>
+  <script>
+    (() => {
+      const allowedEvents = new Set([
+        'page_view',
+        'booking_click',
+        'section_nav_click',
+        'estimate_new_click',
+        'estimate_viewed',
+        'estimate_invalid_viewed',
+        'estimate_edit_started',
+        'estimate_field_updated',
+        'estimate_section_opened',
+        'estimate_scroll_depth',
+        'estimate_link_copied',
+        'estimate_link_shared',
+        'estimate_share_cancelled',
+        'estimate_printed'
+      ]);
+      const allowedParams = new Set([
+        'action_source',
+        'copy_method',
+        'cta_position',
+        'duration_hours',
+        'estimate_completion_status',
+        'estimate_field',
+        'estimate_field_type',
+        'estimate_section',
+        'estimate_status',
+        'estimate_surcharge',
+        'estimate_total',
+        'event_moment_count',
+        'event_timing',
+        'event_type',
+        'failure_reason',
+        'link_text',
+        'link_type',
+        'link_url',
+        'page_language',
+        'production_interest_count',
+        'scroll_depth_percent',
+        'service_type',
+        'share_method',
+        'source_page',
+        'target_language',
+        'target_section',
+        'transport_type',
+        'venue_setting'
+      ]);
+
+      function sanitizeParams(params) {
+        const sanitized = {};
+        if (params && typeof params === 'object') {
+          Object.entries(params).forEach(([key, value]) => {
+            if (!allowedParams.has(key) ||
+              !['string', 'number', 'boolean'].includes(typeof value)) return;
+
+            if (key === 'link_url') {
+              try {
+                const url = new URL(String(value), window.location.origin);
+                url.search = '';
+                sanitized[key] = url.toString();
+              } catch (_) {}
+              return;
+            }
+
+            sanitized[key] = typeof value === 'string' ? value.slice(0, 100) : value;
+          });
+        }
+
+        return {
+          ...sanitized,
+          page_location: `${window.location.origin}/estimate/`,
+          page_path: '/estimate/',
+          page_title: 'Event Proposal Estimate | DJ Juan'
+        };
+      }
+
+      function sendEstimateAnalytics(eventName, params) {
+        if (!allowedEvents.has(eventName)) return;
+        gtag('event', eventName, sanitizeParams(params));
+      }
+
+      window.djJuanEstimateAnalytics = sendEstimateAnalytics;
+      window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin ||
+          event.source !== window.parent ||
+          event.data?.type !== 'djjuan_estimate_analytics') return;
+
+        sendEstimateAnalytics(event.data.eventName, event.data.params);
+      });
+    })();
+  </script>
+
+  <!-- Google tag (gtag.js). This document never receives proposal details. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WCE5BKWSP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WCE5BKWSP', {
+      send_page_view: false,
+      page_location: `${window.location.origin}/estimate/`,
+      page_path: '/estimate/',
+      page_title: 'Event Proposal Estimate | DJ Juan',
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false
+    });
+  </script>
+</body>
+</html>

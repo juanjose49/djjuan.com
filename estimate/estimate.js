@@ -3,6 +3,145 @@ const proposalRates = {
   wedding: 299
 };
 const proposalBothSurcharge = 99;
+const proposalAnalyticsPath = '/estimate/';
+const proposalAnalyticsTitle = 'Event Proposal Estimate | DJ Juan';
+const proposalAnalyticsQueue = [];
+let proposalAnalyticsReady = false;
+
+function getProposalAnalyticsLocation() {
+  return `${window.location.origin}${proposalAnalyticsPath}`;
+}
+
+function postProposalAnalyticsEvent(eventName, params) {
+  const frame = document.getElementById('proposal-analytics-frame');
+  if (!proposalAnalyticsReady || !frame?.contentWindow) {
+    proposalAnalyticsQueue.push({ eventName, params });
+    return;
+  }
+
+  try {
+    if (typeof frame.contentWindow.djJuanEstimateAnalytics === 'function') {
+      frame.contentWindow.djJuanEstimateAnalytics(eventName, params);
+    } else {
+      frame.contentWindow.postMessage({
+        type: 'djjuan_estimate_analytics',
+        eventName,
+        params
+      }, window.location.origin);
+    }
+  } catch (_) {
+    frame.contentWindow.postMessage({
+      type: 'djjuan_estimate_analytics',
+      eventName,
+      params
+    }, window.location.origin);
+  }
+  frame.dataset.analyticsEventCount =
+    String(Number(frame.dataset.analyticsEventCount || 0) + 1);
+}
+
+function initializeProposalAnalyticsBridge() {
+  const frame = document.getElementById('proposal-analytics-frame');
+  if (!frame) return;
+
+  const flush = () => {
+    if (proposalAnalyticsReady) return;
+    proposalAnalyticsReady = true;
+    frame.dataset.analyticsReady = 'true';
+    proposalAnalyticsQueue.splice(0).forEach(({ eventName, params }) => {
+      postProposalAnalyticsEvent(eventName, params);
+    });
+  };
+
+  frame.addEventListener('load', flush, { once: true });
+  try {
+    if (frame.contentDocument?.readyState === 'complete') flush();
+  } catch (_) {}
+}
+
+window.djJuanAnalyticsTrack = postProposalAnalyticsEvent;
+
+function getProposalAnalyticsParams(details) {
+  if (!details) return {};
+
+  const surcharge = getProposalSurcharge(details.eventTiming, details.venueSetting);
+  return {
+    event_type: details.eventType,
+    event_timing: details.eventTiming,
+    venue_setting: details.venueSetting,
+    duration_hours: details.durationHours,
+    estimate_total: (proposalRates[details.eventType] * details.durationHours) + surcharge,
+    estimate_surcharge: surcharge,
+    event_moment_count: details.eventMoments.length,
+    production_interest_count: details.productionInterests.length,
+    estimate_completion_status: hasOpenProposalDetails(details) ? 'open' : 'complete',
+    page_language: details.language
+  };
+}
+
+function trackProposalEvent(eventName, details, params = {}) {
+  if (typeof track !== 'function') return;
+
+  track(eventName, {
+    ...getProposalAnalyticsParams(details),
+    ...params,
+    transport_type: 'beacon'
+  });
+}
+
+function trackProposalPageView(status, details = null) {
+  if (typeof track !== 'function') return;
+
+  track('page_view', {
+    page_location: getProposalAnalyticsLocation(),
+    page_path: proposalAnalyticsPath,
+    page_title: proposalAnalyticsTitle,
+    estimate_status: status,
+    ...getProposalAnalyticsParams(details),
+    transport_type: 'beacon'
+  });
+}
+
+function getProposalFieldAnalytics(target) {
+  if (!(target instanceof HTMLInputElement ||
+    target instanceof HTMLSelectElement ||
+    target instanceof HTMLTextAreaElement)) {
+    return {};
+  }
+
+  return {
+    estimate_field: target.name || 'unknown',
+    estimate_field_type: target instanceof HTMLSelectElement
+      ? 'select'
+      : (target instanceof HTMLTextAreaElement ? 'textarea' : target.type)
+  };
+}
+
+function bindProposalScrollTracking(getDetails) {
+  const trackedDepths = new Set();
+  let frameRequested = false;
+
+  const measure = () => {
+    frameRequested = false;
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollableHeight <= 0) return;
+
+    const depth = Math.round((window.scrollY / scrollableHeight) * 100);
+    [50, 90].forEach((threshold) => {
+      if (depth < threshold || trackedDepths.has(threshold)) return;
+      trackedDepths.add(threshold);
+      trackProposalEvent('estimate_scroll_depth', getDetails(), {
+        scroll_depth_percent: threshold
+      });
+    });
+  };
+
+  window.addEventListener('scroll', () => {
+    if (frameRequested) return;
+    frameRequested = true;
+    window.requestAnimationFrame(measure);
+  }, { passive: true });
+}
 
 const proposalCopy = {
   en: {
@@ -848,13 +987,14 @@ function createProposalChoiceGroup(copy, config) {
   return group;
 }
 
-function createProposalEditSection(title, children, open = false) {
+function createProposalEditSection(title, children, analyticsSection, open = false) {
   const details = document.createElement('details');
   const summary = document.createElement('summary');
   const body = document.createElement('div');
   const grid = document.createElement('div');
 
   details.className = 'proposal-edit-section';
+  details.dataset.analyticsSection = analyticsSection;
   details.open = open;
   summary.textContent = title;
   body.className = 'proposal-edit-section-body';
@@ -1015,9 +1155,9 @@ function buildProposalEditor(details) {
   ];
 
   form.replaceChildren(
-    createProposalEditSection(copy.editor.sections.event, eventFields, true),
-    createProposalEditSection(copy.editor.sections.planning, planningFields),
-    createProposalEditSection(copy.editor.sections.production, productionFields)
+    createProposalEditSection(copy.editor.sections.event, eventFields, 'event', true),
+    createProposalEditSection(copy.editor.sections.planning, planningFields, 'planning'),
+    createProposalEditSection(copy.editor.sections.production, productionFields, 'production')
   );
 }
 
@@ -1100,6 +1240,7 @@ function setProposalLinkStatus(message, fresh = false) {
 async function copyProposalUrl(url) {
   try {
     await navigator.clipboard.writeText(url);
+    return 'clipboard_api';
   } catch (_) {
     const input = document.createElement('textarea');
     input.value = url;
@@ -1110,10 +1251,12 @@ async function copyProposalUrl(url) {
     input.select();
     document.execCommand('copy');
     input.remove();
+    return 'legacy_copy';
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initializeProposalAnalyticsBridge();
   const encoded = new URLSearchParams(window.location.search).get('details');
   let details;
   let latestProposalUrl = window.location.href;
@@ -1122,6 +1265,10 @@ document.addEventListener('DOMContentLoaded', () => {
     details = normalizeProposalDetails(decodeProposalDetails(encoded));
   } catch (_) {
     showProposalError();
+    trackProposalPageView('invalid');
+    trackProposalEvent('estimate_invalid_viewed', null, {
+      failure_reason: 'invalid_or_missing_details'
+    });
     return;
   }
 
@@ -1129,28 +1276,55 @@ document.addEventListener('DOMContentLoaded', () => {
   buildProposalEditor(details);
   updateProposalMissingSummary(details);
   setProposalLinkStatus(proposalCopy[details.language].linkStatus.current);
+  trackProposalPageView('valid', details);
+  trackProposalEvent('estimate_viewed', details);
+  bindProposalScrollTracking(() => details);
 
   const editor = document.getElementById('proposal-editor');
-  editor.addEventListener('input', () => {
+  let editStarted = false;
+  editor.addEventListener('input', (event) => {
     details = readProposalEditor(editor, details);
     latestProposalUrl = createCurrentProposalUrl(details);
     window.history.replaceState({ proposalDetails: details }, '', latestProposalUrl);
     renderProposal(details);
     updateProposalMissingSummary(details);
     setProposalLinkStatus(proposalCopy[details.language].linkStatus.updated, true);
+
+    if (!editStarted) {
+      editStarted = true;
+      trackProposalEvent('estimate_edit_started', details, getProposalFieldAnalytics(event.target));
+    }
+  });
+
+  editor.addEventListener('change', (event) => {
+    trackProposalEvent('estimate_field_updated', details, getProposalFieldAnalytics(event.target));
+  });
+
+  editor.querySelectorAll('.proposal-edit-section').forEach((section) => {
+    section.addEventListener('toggle', () => {
+      if (!section.open || section.dataset.analyticsSection === 'event') return;
+      trackProposalEvent('estimate_section_opened', details, {
+        estimate_section: section.dataset.analyticsSection
+      });
+    });
   });
 
   document.getElementById('print-proposal').addEventListener('click', () => {
+    trackProposalEvent('estimate_printed', details);
     window.print();
   });
 
   document.getElementById('copy-proposal-link').addEventListener('click', async (event) => {
     const button = event.currentTarget;
     const copy = proposalCopy[details.language];
-    await copyProposalUrl(latestProposalUrl);
+    const copyMethod = await copyProposalUrl(latestProposalUrl);
 
     button.textContent = copy.copied;
     setProposalLinkStatus(copy.linkStatus.copied);
+    trackProposalEvent('estimate_link_copied', details, {
+      action_source: 'copy_button',
+      copy_method: copyMethod
+    });
     window.setTimeout(() => {
       button.textContent = copy.copyLink;
     }, 2200);
@@ -1169,16 +1343,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         button.textContent = copy.shared;
         setProposalLinkStatus(copy.linkStatus.shared);
+        trackProposalEvent('estimate_link_shared', details, {
+          share_method: 'native_share'
+        });
       } catch (error) {
-        if (error && error.name === 'AbortError') return;
-        await copyProposalUrl(latestProposalUrl);
+        if (error && error.name === 'AbortError') {
+          trackProposalEvent('estimate_share_cancelled', details, {
+            share_method: 'native_share'
+          });
+          return;
+        }
+        const copyMethod = await copyProposalUrl(latestProposalUrl);
         button.textContent = copy.copied;
         setProposalLinkStatus(copy.linkStatus.copied);
+        trackProposalEvent('estimate_link_copied', details, {
+          action_source: 'share_fallback',
+          copy_method: copyMethod
+        });
       }
     } else {
-      await copyProposalUrl(latestProposalUrl);
+      const copyMethod = await copyProposalUrl(latestProposalUrl);
       button.textContent = copy.copied;
       setProposalLinkStatus(copy.linkStatus.copied);
+      trackProposalEvent('estimate_link_copied', details, {
+        action_source: 'share_fallback',
+        copy_method: copyMethod
+      });
     }
 
     window.setTimeout(() => {

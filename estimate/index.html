@@ -10,6 +10,7 @@
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0f1113" media="(prefers-color-scheme: dark)" />
+
   <script>
     (() => {
       const key = 'djjuan-theme';
@@ -35,14 +36,24 @@
   <link rel="icon" type="image/png" href="../images/brand/dj-juan-icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="../images/brand/dj-juan-icon-512.png" />
   <link rel="stylesheet" href="../index.css?v=20260726-both-surcharges" />
-  <link rel="stylesheet" href="estimate.css?v=20260726-single-column" />
+  <link rel="stylesheet" href="estimate.css?v=20260726-estimate-analytics" />
 </head>
 
 <body class="proposal-body">
   <noscript><div class="noscript">JavaScript is required to read this proposal link.</div></noscript>
+  <iframe
+    id="proposal-analytics-frame"
+    class="proposal-analytics-frame"
+    src="/estimate/analytics.html"
+    title="Estimate analytics"
+    aria-hidden="true"
+    tabindex="-1"
+    referrerpolicy="no-referrer"
+    loading="eager"
+  ></iframe>
 
   <header class="site-header proposal-header">
-    <a class="brand" href="../" aria-label="DJ Juan home">
+    <a class="brand" href="../" aria-label="DJ Juan home" data-track="section" data-track-section="home">
       <img class="brand-logo" src="../images/brand/dj-juan-logo-96.webp" alt="" width="96" height="94" aria-hidden="true" />
     </a>
     <nav class="top-actions" aria-label="Proposal actions">
@@ -50,7 +61,7 @@
         <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
         <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
       </button>
-      <a class="nav-cta" id="header-booking-link" href="../#booking">Meet DJ Juan</a>
+      <a class="nav-cta" id="header-booking-link" href="../#booking" data-track="booking">Meet DJ Juan</a>
     </nav>
   </header>
 
@@ -59,7 +70,7 @@
       <p class="eyebrow">Proposal link</p>
       <h1 id="proposal-error-title">This proposal link is incomplete.</h1>
       <p id="proposal-error-copy">Return to the pricing tool to create a new estimate with the event details included.</p>
-      <a class="btn btn-primary" id="proposal-error-link" href="../#pricing">Create an estimate</a>
+      <a class="btn btn-primary" id="proposal-error-link" href="../#pricing" data-track="estimate_new">Create an estimate</a>
     </section>
 
     <article id="proposal-content" class="proposal-document" hidden>
@@ -81,7 +92,7 @@
         <button class="outline-link proposal-action" id="copy-proposal-link" type="button">Copy latest link</button>
         <button class="outline-link proposal-action" id="share-proposal-link" type="button">Share latest estimate</button>
         <button class="outline-link proposal-action" id="print-proposal" type="button">Print or save PDF</button>
-        <a class="text-link" id="proposal-booking-link" href="../#booking">Schedule a meet and greet</a>
+        <a class="text-link" id="proposal-booking-link" href="../#booking" data-track="booking">Schedule a meet and greet</a>
       </div>
 
       <div class="proposal-link-status" id="proposal-link-status" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -190,12 +201,12 @@
 
       <footer class="proposal-footer">
         <p id="proposal-footer-copy">This estimate is not a reservation. DJ Juan will confirm availability and final scope before booking.</p>
-        <a id="new-estimate-link" href="../#pricing">Create another estimate</a>
+        <a id="new-estimate-link" href="../#pricing" data-track="estimate_new">Create another estimate</a>
       </footer>
     </article>
   </main>
 
-  <script src="../index.js?v=20260726-both-surcharges" defer></script>
-  <script src="estimate.js?v=20260726-both-surcharges" defer></script>
+  <script src="../index.js?v=20260726-estimate-analytics" defer></script>
+  <script src="estimate.js?v=20260726-estimate-analytics" defer></script>
 </body>
 </html>

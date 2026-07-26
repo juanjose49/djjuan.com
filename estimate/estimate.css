@@ -1,6 +1,14 @@
 .proposal-body{
   min-height:100vh;
 }
+.proposal-analytics-frame{
+  position:absolute;
+  width:0;
+  height:0;
+  border:0;
+  opacity:0;
+  pointer-events:none;
+}
 .proposal-page{
   width:min(1120px, calc(100% - 40px));
   margin:0 auto;
