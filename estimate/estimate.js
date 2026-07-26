@@ -59,6 +59,75 @@ function initializeProposalAnalyticsBridge() {
   } catch (_) {}
 }
 
+function bindPrivateTidyCalResize() {
+  const iframe = document.getElementById('tidycal-booking');
+  if (!iframe) return;
+
+  const allowedOrigins = new Set(['https://tidycal.com']);
+  [iframe.src, iframe.dataset.lightSrc, iframe.dataset.darkSrc].forEach((source) => {
+    if (!source) return;
+
+    try {
+      allowedOrigins.add(new URL(source, window.location.origin).origin);
+    } catch (_) {}
+  });
+
+  const minimumHeight = 500;
+  const maximumHeight = 2400;
+  const messagePrefix = `[iFrameSizer]${iframe.id}:`;
+  const initMessage = `${iframe.id}:8:false:false:32:true:true:null:bodyOffset:null:null:0:false:parent:scroll:false`;
+
+  const postToFrame = (message, targetOrigin) => {
+    if (!iframe.contentWindow || !allowedOrigins.has(targetOrigin)) return;
+    iframe.contentWindow.postMessage(`[iFrameSizer]${message}`, targetOrigin);
+  };
+
+  const getConfiguredOrigin = () => {
+    try {
+      return new URL(iframe.getAttribute('src'), window.location.origin).origin;
+    } catch (_) {
+      return '';
+    }
+  };
+
+  const initializeFrame = (targetOrigin) => {
+    postToFrame(initMessage, targetOrigin);
+  };
+
+  window.addEventListener('message', (event) => {
+    if (event.source !== iframe.contentWindow ||
+      !allowedOrigins.has(event.origin) ||
+      typeof event.data !== 'string') return;
+
+    if (event.data === '[iFrameResizerChild]Ready') {
+      initializeFrame(event.origin);
+      return;
+    }
+
+    if (!event.data.startsWith(messagePrefix)) return;
+    const [height] = event.data.slice(messagePrefix.length).split(':');
+    const measuredHeight = Number.parseFloat(height);
+    if (!Number.isFinite(measuredHeight)) return;
+
+    const nextHeight = Math.min(
+      maximumHeight,
+      Math.max(minimumHeight, Math.ceil(measuredHeight))
+    );
+    iframe.style.height = `${nextHeight}px`;
+  });
+
+  iframe.addEventListener('load', () => {
+    iframe.style.height = '700px';
+    initializeFrame(getConfiguredOrigin());
+  });
+
+  window.addEventListener('resize', () => {
+    postToFrame('resize', getConfiguredOrigin());
+  });
+
+  initializeFrame(getConfiguredOrigin());
+}
+
 window.djJuanAnalyticsTrack = postProposalAnalyticsEvent;
 
 function getProposalAnalyticsParams(details) {
@@ -1285,6 +1354,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProposal(details);
   buildProposalEditor(details);
   updateProposalMissingSummary(details);
+  bindPrivateTidyCalResize();
   setProposalLinkStatus(proposalCopy[details.language].linkStatus.current);
   trackProposalPageView('valid', details);
   trackProposalEvent('estimate_viewed', details);

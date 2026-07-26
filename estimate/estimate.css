@@ -445,9 +445,8 @@
   box-shadow:0 14px 34px var(--shadow-soft);
 }
 .proposal-booking-section .tidycal-embed{
-  height:80vh;
-  min-height:720px;
-  max-height:900px;
+  height:700px;
+  min-height:500px;
 }
 .proposal-footer{
   padding:22px 4px 0;
