@@ -840,25 +840,6 @@ p{color:var(--muted)}
 .planning-form-grid{
   margin-top:18px;
 }
-.terms-check{
-  display:flex;
-  gap:12px;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:8px;
-  color:var(--ink);
-  background:var(--paper);
-  font-size:.88rem;
-  font-weight:700;
-  cursor:pointer;
-}
-.terms-check input{
-  flex:0 0 auto;
-  width:20px;
-  height:20px;
-  margin:2px 0 0;
-  accent-color:var(--teal-button);
-}
 .estimate-summary{
   padding:24px;
   border-radius:10px;
@@ -924,14 +905,13 @@ p{color:var(--muted)}
   font-size:.74rem;
   line-height:1.45;
 }
-.pricing-disclaimer{
-  max-width:900px;
-  padding:15px 18px;
-  margin:22px 0 0;
-  border-left:4px solid var(--gold);
-  color:var(--muted);
-  background:var(--paper);
-  font-size:.86rem;
+.estimate-terms-note{
+  padding-top:10px;
+  margin-top:10px;
+  border-top:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.76);
+  font-size:.74rem;
+  line-height:1.45;
 }
 
 .booking-section{
@@ -969,8 +949,7 @@ p{color:var(--muted)}
 .select-label select:focus-visible,
 .choice-card input:focus-visible,
 .check-chip input:focus-visible + span,
-.planning-details summary:focus-visible,
-.terms-check input:focus-visible{
+.planning-details summary:focus-visible{
   outline:3px solid var(--gold);
   outline-offset:3px;
   text-decoration:none;

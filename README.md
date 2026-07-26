@@ -35,7 +35,7 @@ The pricing tool immediately above the booking section calculates event coverage
 
 The two surcharges are independent. Selecting both combined options adds `$198`.
 
-Only five inputs are required to create a proposal: event date, coverage hours, client name, email, and acknowledgment of the estimate conditions. Start time, venue, partner or co-host, event moments, coordinator, music direction, special dances, performers, production interests, and logistics remain optional so a prospect can create a useful link early and refine it with a spouse or planner later.
+Only four inputs are required to create a proposal: event date, coverage hours, client name, and email. Start time, venue, partner or co-host, event moments, coordinator, music direction, special dances, performers, production interests, and logistics remain optional so a prospect can create a useful link early and refine it with a spouse or planner later. The estimate conditions appear directly below the proposal-link privacy notice without requiring a separate acknowledgment.
 
 Submitting the form encodes the supplied event details as base64 JSON and opens:
 
