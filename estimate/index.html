@@ -36,7 +36,7 @@
   <link rel="icon" type="image/png" href="../images/brand/dj-juan-icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="../images/brand/dj-juan-icon-512.png" />
   <link rel="stylesheet" href="../index.css?v=20260726-both-surcharges" />
-  <link rel="stylesheet" href="estimate.css?v=20260726-estimate-analytics" />
+  <link rel="stylesheet" href="estimate.css?v=20260726-estimate-booking" />
 </head>
 
 <body class="proposal-body">
@@ -199,6 +199,24 @@
         </section>
       </div>
 
+      <section id="booking" class="booking-section proposal-booking-section" aria-labelledby="booking-title">
+        <div class="section-heading">
+          <p class="eyebrow" id="booking-eyebrow">Booking</p>
+          <h2 id="booking-title">Schedule your meet and greet.</h2>
+        </div>
+        <iframe
+          id="tidycal-booking"
+          class="tidycal-embed"
+          src="https://schedule.djjuan.com/meet-greet-1vr8ogy-m5n072x"
+          data-light-src="https://schedule.djjuan.com/meet-greet-1vr8ogy-m5n072x"
+          data-dark-src="https://schedule.djjuan.com/meet-greet-1vr8ogy"
+          title="Schedule a meet and greet with DJ Juan"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          allow="payment"
+        ></iframe>
+      </section>
+
       <footer class="proposal-footer">
         <p id="proposal-footer-copy">This estimate is not a reservation. DJ Juan will confirm availability and final scope before booking.</p>
         <a id="new-estimate-link" href="../#pricing" data-track="estimate_new">Create another estimate</a>
@@ -207,6 +225,6 @@
   </main>
 
   <script src="../index.js?v=20260726-estimate-analytics" defer></script>
-  <script src="estimate.js?v=20260726-estimate-analytics" defer></script>
+  <script src="estimate.js?v=20260726-estimate-booking" defer></script>
 </body>
 </html>

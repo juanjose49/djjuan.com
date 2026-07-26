@@ -161,6 +161,9 @@ const proposalCopy = {
     shared: 'Latest estimate ready to share',
     print: 'Print or save PDF',
     booking: 'Schedule a meet and greet',
+    bookingEyebrow: 'Booking',
+    bookingTitle: 'Schedule your meet and greet.',
+    bookingFrameTitle: 'Schedule a meet and greet with DJ Juan',
     eventEyebrow: 'Event',
     eventDetails: 'Event details',
     pricingEyebrow: 'Pricing',
@@ -339,6 +342,9 @@ const proposalCopy = {
     shared: 'Estimado más reciente listo para compartir',
     print: 'Imprimir o guardar PDF',
     booking: 'Programar una llamada inicial',
+    bookingEyebrow: 'Reserva',
+    bookingTitle: 'Agenda tu llamada inicial.',
+    bookingFrameTitle: 'Agenda una llamada inicial con DJ Juan',
     eventEyebrow: 'Evento',
     eventDetails: 'Detalles del evento',
     pricingEyebrow: 'Precio',
@@ -681,6 +687,8 @@ function applyProposalCopy(copy, details) {
   setText('share-proposal-link', copy.shareLink);
   setText('print-proposal', copy.print);
   setText('proposal-booking-link', copy.booking);
+  setText('booking-eyebrow', copy.bookingEyebrow);
+  setText('booking-title', copy.bookingTitle);
   setText('proposal-editor-eyebrow', copy.editor.eyebrow);
   setText('proposal-editor-title', copy.editor.title);
   setText('proposal-editor-intro', copy.editor.intro);
@@ -705,6 +713,7 @@ function applyProposalCopy(copy, details) {
   setText('notes-title', copy.notes);
   setText('proposal-footer-copy', copy.footer);
   setText('new-estimate-link', copy.newEstimate);
+  document.getElementById('tidycal-booking').title = copy.bookingFrameTitle;
 
   const eyebrowElements = document.querySelectorAll('.proposal-card > .eyebrow');
   const eyebrowCopy = [
@@ -752,8 +761,8 @@ function renderProposal(details) {
   document.getElementById('proposal-notes').textContent = '';
   document.getElementById('proposal-timing-surcharge-row').hidden = true;
   document.getElementById('proposal-setting-surcharge-row').hidden = true;
-  document.getElementById('header-booking-link').href = `${sitePrefix}#booking`;
-  document.getElementById('proposal-booking-link').href = `${sitePrefix}#booking`;
+  document.getElementById('header-booking-link').href = '#booking';
+  document.getElementById('proposal-booking-link').href = '#booking';
   document.getElementById('new-estimate-link').href = `${sitePrefix}#pricing`;
   document.getElementById('proposal-title').textContent = details.eventName ||
     (details.eventType === 'wedding' ? copy.weddingTitle : copy.specialTitle);
@@ -1223,6 +1232,7 @@ function updateProposalMissingSummary(details) {
 function createCurrentProposalUrl(details) {
   const url = new URL(window.location.href);
   url.search = '';
+  url.hash = '';
   url.searchParams.set('details', encodeEstimateDetails({ ...details, version: 3 }));
   return url.toString();
 }

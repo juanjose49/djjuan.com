@@ -45,6 +45,8 @@ https://djjuan.com/estimate?details=<base64-json>
 
 The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL.
 
+The estimate page ends with the same TidyCal meet-and-greet scheduler used on the main site. The header and proposal scheduling actions link directly to `#booking` on the estimate page. The schedule loads in a cross-origin iframe with no referrer, so the proposal query string is not disclosed to the booking service.
+
 Proposal pages are marked `noindex` and send no referrer. Analytics run inside the same-site `estimate/analytics.html` bridge, whose browser history and URL never contain the proposal payload. The bridge manually reports a sanitized `/estimate/` page location and accepts only allowlisted event names and parameters. This avoids GA4 enhanced measurement observing the `history.replaceState` calls that keep the latest share link in the address bar.
 
 Estimate events contain only service configuration, completion state, field names, and interaction types. Names, email addresses, phone numbers, venues, notes, field values, and share URLs are not sent. Base64 is an encoding, not encryption, so proposal links should still be shared only with intended recipients.

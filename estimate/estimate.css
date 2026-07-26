@@ -436,6 +436,19 @@
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
+.proposal-booking-section{
+  scroll-margin-top:100px;
+  padding:26px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--paper);
+  box-shadow:0 14px 34px var(--shadow-soft);
+}
+.proposal-booking-section .tidycal-embed{
+  height:80vh;
+  min-height:720px;
+  max-height:900px;
+}
 .proposal-footer{
   padding:22px 4px 0;
   border-top:1px solid var(--line);
@@ -542,6 +555,7 @@
   .proposal-header,
   .proposal-actions,
   .proposal-link-status,
+  .proposal-booking-section,
   .proposal-completion-card{
     display:none !important;
   }
