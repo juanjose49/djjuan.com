@@ -42,7 +42,9 @@ function applyTheme(theme) {
   themeColors.forEach((meta) => {
     meta.content = isDark ? '#0f1113' : '#fbfaf7';
   });
-  if (bookingIframe) {
+  if (bookingIframe &&
+    !bookingIframe.hidden &&
+    bookingIframe.dataset.deferLoad !== 'true') {
     const bookingSrc = isDark ? bookingIframe.dataset.darkSrc : bookingIframe.dataset.lightSrc;
     if (bookingSrc && bookingIframe.getAttribute('src') !== bookingSrc) {
       bookingIframe.setAttribute('src', bookingSrc);
@@ -348,6 +350,7 @@ function bindEstimateForm() {
       performerDetails: String(data.get('performerDetails') || '').trim(),
       logisticsNotes: String(data.get('logisticsNotes') || '').trim(),
       notes: String(data.get('notes') || '').trim(),
+      bookingClosed: false,
       createdAt: new Date().toISOString()
     };
 

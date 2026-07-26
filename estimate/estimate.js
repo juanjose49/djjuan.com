@@ -64,11 +64,12 @@ function bindPrivateTidyCalResize() {
   if (!iframe) return;
 
   const allowedOrigins = new Set(['https://tidycal.com']);
-  [iframe.src, iframe.dataset.lightSrc, iframe.dataset.darkSrc].forEach((source) => {
+  [iframe.dataset.lightSrc, iframe.dataset.darkSrc].forEach((source) => {
     if (!source) return;
 
     try {
-      allowedOrigins.add(new URL(source, window.location.origin).origin);
+      const url = new URL(source, window.location.origin);
+      if (url.protocol === 'https:') allowedOrigins.add(url.origin);
     } catch (_) {}
   });
 
@@ -95,7 +96,8 @@ function bindPrivateTidyCalResize() {
   };
 
   window.addEventListener('message', (event) => {
-    if (event.source !== iframe.contentWindow ||
+    if (iframe.hidden ||
+      event.source !== iframe.contentWindow ||
       !allowedOrigins.has(event.origin) ||
       typeof event.data !== 'string') return;
 
@@ -117,15 +119,51 @@ function bindPrivateTidyCalResize() {
   });
 
   iframe.addEventListener('load', () => {
+    if (iframe.hidden) return;
     iframe.style.height = '700px';
     initializeFrame(getConfiguredOrigin());
   });
 
   window.addEventListener('resize', () => {
+    if (iframe.hidden) return;
     postToFrame('resize', getConfiguredOrigin());
   });
 
-  initializeFrame(getConfiguredOrigin());
+  if (!iframe.hidden) initializeFrame(getConfiguredOrigin());
+}
+
+function getTidyCalSource(iframe) {
+  return document.documentElement.dataset.theme === 'dark'
+    ? iframe.dataset.darkSrc
+    : iframe.dataset.lightSrc;
+}
+
+function renderBookingVisibility(details) {
+  const iframe = document.getElementById('tidycal-booking');
+  const closeButton = document.getElementById('booking-close');
+  const openButton = document.getElementById('booking-open');
+  const closedState = document.getElementById('booking-closed-state');
+  const bookingClosed = details.bookingClosed;
+
+  closeButton.hidden = bookingClosed;
+  closeButton.setAttribute('aria-expanded', String(!bookingClosed));
+  openButton.setAttribute('aria-expanded', String(!bookingClosed));
+  closedState.hidden = !bookingClosed;
+  iframe.hidden = bookingClosed;
+
+  if (bookingClosed) {
+    iframe.dataset.deferLoad = 'true';
+    if (iframe.getAttribute('src') !== 'about:blank') {
+      iframe.setAttribute('src', 'about:blank');
+    }
+    return;
+  }
+
+  iframe.dataset.deferLoad = 'false';
+  const source = getTidyCalSource(iframe);
+  if (source && iframe.getAttribute('src') !== source) {
+    iframe.setAttribute('src', source);
+  }
 }
 
 window.djJuanAnalyticsTrack = postProposalAnalyticsEvent;
@@ -233,6 +271,9 @@ const proposalCopy = {
     bookingEyebrow: 'Booking',
     bookingTitle: 'Schedule your meet and greet.',
     bookingFrameTitle: 'Schedule a meet and greet with DJ Juan',
+    bookingClose: 'Hide scheduler',
+    bookingOpen: 'Show scheduler',
+    bookingClosed: 'The scheduler is hidden in this estimate. Show it whenever you are ready to choose a time.',
     eventEyebrow: 'Event',
     eventDetails: 'Event details',
     pricingEyebrow: 'Pricing',
@@ -414,6 +455,9 @@ const proposalCopy = {
     bookingEyebrow: 'Reserva',
     bookingTitle: 'Agenda tu llamada inicial.',
     bookingFrameTitle: 'Agenda una llamada inicial con DJ Juan',
+    bookingClose: 'Ocultar calendario',
+    bookingOpen: 'Mostrar calendario',
+    bookingClosed: 'El calendario está oculto en este estimado. Muéstralo cuando estén listos para elegir una hora.',
     eventEyebrow: 'Evento',
     eventDetails: 'Detalles del evento',
     pricingEyebrow: 'Precio',
@@ -645,6 +689,7 @@ function normalizeProposalDetails(raw) {
     performerDetails: cleanProposalText(raw.performerDetails, 1000),
     logisticsNotes: cleanProposalText(raw.logisticsNotes, 1000),
     notes: cleanProposalText(raw.notes, 1000),
+    bookingClosed: raw.bookingClosed === true,
     createdAt: cleanProposalText(raw.createdAt, 40)
   };
 
@@ -758,6 +803,9 @@ function applyProposalCopy(copy, details) {
   setText('proposal-booking-link', copy.booking);
   setText('booking-eyebrow', copy.bookingEyebrow);
   setText('booking-title', copy.bookingTitle);
+  setText('booking-close-label', copy.bookingClose);
+  setText('booking-open', copy.bookingOpen);
+  setText('booking-closed-copy', copy.bookingClosed);
   setText('proposal-editor-eyebrow', copy.editor.eyebrow);
   setText('proposal-editor-title', copy.editor.title);
   setText('proposal-editor-intro', copy.editor.intro);
@@ -782,7 +830,13 @@ function applyProposalCopy(copy, details) {
   setText('notes-title', copy.notes);
   setText('proposal-footer-copy', copy.footer);
   setText('new-estimate-link', copy.newEstimate);
-  document.getElementById('tidycal-booking').title = copy.bookingFrameTitle;
+  const bookingIframe = document.getElementById('tidycal-booking');
+  const bookingClose = document.getElementById('booking-close');
+  const bookingOpen = document.getElementById('booking-open');
+  bookingIframe.title = copy.bookingFrameTitle;
+  bookingClose.setAttribute('aria-label', copy.bookingClose);
+  bookingClose.title = copy.bookingClose;
+  bookingOpen.setAttribute('aria-label', copy.bookingOpen);
 
   const eyebrowElements = document.querySelectorAll('.proposal-card > .eyebrow');
   const eyebrowCopy = [
@@ -822,6 +876,7 @@ function renderProposal(details) {
   const sitePrefix = details.language === 'es' ? '../es/' : '../';
 
   applyProposalCopy(copy, details);
+  renderBookingVisibility(details);
   document.getElementById('proposal-plan-card').hidden = true;
   document.getElementById('proposal-moments-group').hidden = true;
   document.getElementById('proposal-production-card').hidden = true;
@@ -1351,10 +1406,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  bindPrivateTidyCalResize();
   renderProposal(details);
   buildProposalEditor(details);
   updateProposalMissingSummary(details);
-  bindPrivateTidyCalResize();
   setProposalLinkStatus(proposalCopy[details.language].linkStatus.current);
   trackProposalPageView('valid', details);
   trackProposalEvent('estimate_viewed', details);
@@ -1362,13 +1417,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const editor = document.getElementById('proposal-editor');
   let editStarted = false;
-  editor.addEventListener('input', (event) => {
-    details = readProposalEditor(editor, details);
+
+  const saveProposalDetails = (nextDetails) => {
+    details = normalizeProposalDetails(nextDetails);
     latestProposalUrl = createCurrentProposalUrl(details);
     window.history.replaceState({ proposalDetails: details }, '', latestProposalUrl);
     renderProposal(details);
     updateProposalMissingSummary(details);
     setProposalLinkStatus(proposalCopy[details.language].linkStatus.updated, true);
+  };
+
+  editor.addEventListener('input', (event) => {
+    saveProposalDetails(readProposalEditor(editor, details));
 
     if (!editStarted) {
       editStarted = true;
@@ -1386,6 +1446,20 @@ document.addEventListener('DOMContentLoaded', () => {
       trackProposalEvent('estimate_section_opened', details, {
         estimate_section: section.dataset.analyticsSection
       });
+    });
+  });
+
+  document.getElementById('booking-close').addEventListener('click', () => {
+    saveProposalDetails({ ...details, bookingClosed: true });
+    trackProposalEvent('estimate_booking_visibility_changed', details, {
+      booking_visibility: 'closed'
+    });
+  });
+
+  document.getElementById('booking-open').addEventListener('click', () => {
+    saveProposalDetails({ ...details, bookingClosed: false });
+    trackProposalEvent('estimate_booking_visibility_changed', details, {
+      booking_visibility: 'open'
     });
   });
 

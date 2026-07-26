@@ -36,7 +36,7 @@
   <link rel="icon" type="image/png" href="../images/brand/dj-juan-icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="../images/brand/dj-juan-icon-512.png" />
   <link rel="stylesheet" href="../index.css?v=20260726-both-surcharges" />
-  <link rel="stylesheet" href="estimate.css?v=20260726-private-booking-resize" />
+  <link rel="stylesheet" href="estimate.css?v=20260726-booking-visibility" />
 </head>
 
 <body class="proposal-body">
@@ -44,7 +44,7 @@
   <iframe
     id="proposal-analytics-frame"
     class="proposal-analytics-frame"
-    src="/estimate/analytics.html"
+    src="/estimate/analytics.html?v=20260726-booking-visibility"
     title="Estimate analytics"
     aria-hidden="true"
     tabindex="-1"
@@ -200,20 +200,44 @@
       </div>
 
       <section id="booking" class="booking-section proposal-booking-section" aria-labelledby="booking-title">
-        <div class="section-heading">
-          <p class="eyebrow" id="booking-eyebrow">Booking</p>
-          <h2 id="booking-title">Schedule your meet and greet.</h2>
+        <div class="proposal-booking-header">
+          <div class="section-heading">
+            <p class="eyebrow" id="booking-eyebrow">Booking</p>
+            <h2 id="booking-title">Schedule your meet and greet.</h2>
+          </div>
+          <button
+            id="booking-close"
+            class="proposal-booking-toggle"
+            type="button"
+            aria-controls="tidycal-booking"
+            aria-expanded="true"
+          >
+            <span aria-hidden="true">×</span>
+            <span id="booking-close-label">Hide scheduler</span>
+          </button>
+        </div>
+        <div id="booking-closed-state" class="proposal-booking-closed-state" aria-live="polite" hidden>
+          <p id="booking-closed-copy">The scheduler is hidden in this estimate. Show it whenever you are ready to choose a time.</p>
+          <button
+            id="booking-open"
+            class="btn btn-secondary"
+            type="button"
+            aria-controls="tidycal-booking"
+            aria-expanded="false"
+          >Show scheduler</button>
         </div>
         <iframe
           id="tidycal-booking"
           class="tidycal-embed"
-          src="https://schedule.djjuan.com/meet-greet-1vr8ogy-m5n072x?embed=1"
+          src="about:blank"
+          data-defer-load="true"
           data-light-src="https://schedule.djjuan.com/meet-greet-1vr8ogy-m5n072x?embed=1"
           data-dark-src="https://schedule.djjuan.com/meet-greet-1vr8ogy?embed=1"
           title="Schedule a meet and greet with DJ Juan"
           loading="lazy"
           referrerpolicy="no-referrer"
           allow="payment"
+          hidden
         ></iframe>
       </section>
 
@@ -224,7 +248,7 @@
     </article>
   </main>
 
-  <script src="../index.js?v=20260726-estimate-analytics" defer></script>
-  <script src="estimate.js?v=20260726-private-booking-resize" defer></script>
+  <script src="../index.js?v=20260726-booking-visibility" defer></script>
+  <script src="estimate.js?v=20260726-booking-visibility" defer></script>
 </body>
 </html>

@@ -444,6 +444,57 @@
   background:var(--paper);
   box-shadow:0 14px 34px var(--shadow-soft);
 }
+.proposal-booking-section [hidden]{
+  display:none !important;
+}
+.proposal-booking-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px;
+}
+.proposal-booking-toggle{
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  gap:7px;
+  min-height:42px;
+  padding:9px 13px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--ink);
+  background:transparent;
+  font:inherit;
+  font-size:.82rem;
+  font-weight:850;
+  cursor:pointer;
+}
+.proposal-booking-toggle:hover{
+  border-color:var(--teal);
+  color:var(--teal);
+}
+.proposal-booking-toggle span[aria-hidden]{
+  font-size:1.25rem;
+  font-weight:500;
+  line-height:.8;
+}
+.proposal-booking-closed-state{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:18px;
+  border:1px dashed var(--line);
+  border-radius:9px;
+  background:color-mix(in srgb, var(--teal) 5%, var(--paper));
+}
+.proposal-booking-closed-state p{
+  margin:0;
+  color:var(--muted);
+}
+.proposal-booking-closed-state .btn{
+  flex:0 0 auto;
+}
 .proposal-booking-section .tidycal-embed{
   height:700px;
   min-height:500px;
@@ -498,6 +549,26 @@
   }
   .proposal-completion-card{
     padding:20px;
+  }
+  .proposal-booking-section{
+    padding:20px;
+  }
+  .proposal-booking-header{
+    gap:12px;
+  }
+  .proposal-booking-toggle{
+    min-height:40px;
+    padding:8px 10px;
+  }
+  .proposal-booking-toggle #booking-close-label{
+    display:none;
+  }
+  .proposal-booking-closed-state{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .proposal-booking-closed-state .btn{
+    width:100%;
   }
   .proposal-edit-grid{
     grid-template-columns:1fr;
