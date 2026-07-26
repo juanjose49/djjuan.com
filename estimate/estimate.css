@@ -4,7 +4,7 @@
 .proposal-page{
   width:min(1120px, calc(100% - 40px));
   margin:0 auto;
-  padding:54px 0 70px;
+  padding:54px 0 150px;
 }
 .proposal-error{
   max-width:720px;
@@ -101,14 +101,22 @@
   cursor:pointer;
 }
 .proposal-link-status{
+  position:fixed;
+  z-index:40;
+  right:0;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  left:0;
   display:flex;
   gap:8px;
   align-items:flex-start;
+  width:min(1120px, calc(100% - 40px));
+  margin:0 auto;
   padding:14px 16px;
   border:1px solid color-mix(in srgb, var(--teal) 38%, var(--line));
   border-radius:9px;
   color:var(--muted);
   background:color-mix(in srgb, var(--teal) 7%, var(--white));
+  box-shadow:0 14px 34px var(--shadow-strong);
   font-size:.92rem;
 }
 .proposal-link-status::before{
@@ -316,7 +324,9 @@
 .proposal-details dd:last-of-type{
   border-bottom:0;
 }
-.proposal-price-card{
+.proposal-event-card,
+.proposal-price-card,
+.proposal-completion-card{
   grid-column:1 / -1;
 }
 .proposal-price-table{
@@ -447,7 +457,7 @@
 @media (max-width:620px){
   .proposal-page{
     width:min(100% - 28px, 1120px);
-    padding-top:28px;
+    padding:28px 0 calc(190px + env(safe-area-inset-bottom));
   }
   .proposal-intro,
   .proposal-card,
@@ -462,6 +472,10 @@
     width:100%;
   }
   .proposal-link-status{
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    width:calc(100% - 20px);
+    padding:12px 14px;
+    font-size:.86rem;
     line-height:1.45;
   }
   .proposal-completion-card{
