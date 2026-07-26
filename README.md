@@ -24,6 +24,25 @@ Primary booking target:
 https://djjuan.com/#booking
 ```
 
+## Event Pricing and Proposal Links
+
+The pricing tool immediately above the booking section calculates event coverage from the selected service and hours:
+
+- Special events: `$199/hour`
+- Weddings: `$299/hour`
+
+Only five inputs are required to create a proposal: event date, coverage hours, client name, email, and acknowledgment of the estimate conditions. Start time, venue, partner or co-host, event moments, coordinator, music direction, special dances, performers, production interests, and logistics remain optional so a prospect can create a useful link early and refine it with a spouse or planner later.
+
+Submitting the form encodes the supplied event details as base64 JSON and opens:
+
+```text
+https://djjuan.com/estimate?details=<base64-json>
+```
+
+The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL.
+
+Proposal pages are marked `noindex`, send no referrer, and load no third-party scripts because the URL can contain contact and event details. Base64 is an encoding, not encryption, so proposal links should be shared only with intended recipients.
+
 ## Local Preview
 
 From this directory:

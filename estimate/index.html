@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Event Proposal Estimate | DJ Juan</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="description" content="A private event proposal estimate generated from DJ Juan's event pricing tool." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f1113" media="(prefers-color-scheme: dark)" />
+  <script>
+    (() => {
+      const key = 'djjuan-theme';
+      let savedTheme = null;
+
+      try {
+        savedTheme = localStorage.getItem(key);
+      } catch (_) {}
+
+      const theme = savedTheme === 'dark' || savedTheme === 'light'
+        ? savedTheme
+        : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+        meta.content = theme === 'dark' ? '#0f1113' : '#fbfaf7';
+      });
+    })();
+  </script>
+
+  <link rel="icon" href="../favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/png" href="../images/brand/dj-juan-icon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="../images/brand/dj-juan-icon-512.png" />
+  <link rel="stylesheet" href="../index.css?v=20260726-live-estimate" />
+  <link rel="stylesheet" href="estimate.css?v=20260726-live-estimate" />
+</head>
+
+<body class="proposal-body">
+  <noscript><div class="noscript">JavaScript is required to read this proposal link.</div></noscript>
+
+  <header class="site-header proposal-header">
+    <a class="brand" href="../" aria-label="DJ Juan home">
+      <img class="brand-logo" src="../images/brand/dj-juan-logo-96.webp" alt="" width="96" height="94" aria-hidden="true" />
+    </a>
+    <nav class="top-actions" aria-label="Proposal actions">
+      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
+      </button>
+      <a class="nav-cta" id="header-booking-link" href="../#booking">Meet DJ Juan</a>
+    </nav>
+  </header>
+
+  <main class="proposal-page">
+    <section id="proposal-error" class="proposal-error" role="alert" hidden>
+      <p class="eyebrow">Proposal link</p>
+      <h1 id="proposal-error-title">This proposal link is incomplete.</h1>
+      <p id="proposal-error-copy">Return to the pricing tool to create a new estimate with the event details included.</p>
+      <a class="btn btn-primary" id="proposal-error-link" href="../#pricing">Create an estimate</a>
+    </section>
+
+    <article id="proposal-content" class="proposal-document" hidden>
+      <header class="proposal-intro">
+        <div>
+          <p class="eyebrow" id="proposal-eyebrow">DJ Juan event proposal</p>
+          <h1 id="proposal-title">Event estimate</h1>
+          <p class="proposal-lead" id="proposal-lead">Prepared for <strong id="proposal-client"></strong></p>
+          <p class="proposal-issued" id="proposal-issued"></p>
+        </div>
+        <div class="proposal-total-card">
+          <span id="proposal-total-label">Estimated total</span>
+          <strong id="proposal-total"></strong>
+          <small id="proposal-rate"></small>
+        </div>
+      </header>
+
+      <div class="proposal-actions" aria-label="Proposal tools">
+        <button class="outline-link proposal-action" id="copy-proposal-link" type="button">Copy latest link</button>
+        <button class="outline-link proposal-action" id="share-proposal-link" type="button">Share latest estimate</button>
+        <button class="outline-link proposal-action" id="print-proposal" type="button">Print or save PDF</button>
+        <a class="text-link" id="proposal-booking-link" href="../#booking">Schedule a meet and greet</a>
+      </div>
+
+      <div class="proposal-link-status" id="proposal-link-status" role="status" aria-live="polite" aria-atomic="true"></div>
+
+      <section class="proposal-completion-card" aria-labelledby="proposal-editor-title">
+        <div class="proposal-completion-intro">
+          <div>
+            <p class="eyebrow" id="proposal-editor-eyebrow">Complete together</p>
+            <h2 id="proposal-editor-title">Add details whenever you are ready</h2>
+          </div>
+          <p id="proposal-editor-intro">Blank fields can stay open for now. You or your partner can add what you know, and the shareable estimate link will update automatically.</p>
+        </div>
+        <p class="proposal-missing-summary" id="proposal-missing-summary"></p>
+        <form id="proposal-editor" class="proposal-editor" novalidate></form>
+        <p class="proposal-editor-privacy" id="proposal-editor-privacy">Only include information you are comfortable placing in a shareable link. Do not add door codes or private access instructions.</p>
+      </section>
+
+      <div class="proposal-grid">
+        <section class="proposal-card" aria-labelledby="event-details-title">
+          <p class="eyebrow">Event</p>
+          <h2 id="event-details-title">Event details</h2>
+          <dl class="proposal-details" id="proposal-details"></dl>
+        </section>
+
+        <section class="proposal-card proposal-price-card" aria-labelledby="pricing-breakdown-title">
+          <p class="eyebrow">Pricing</p>
+          <h2 id="pricing-breakdown-title">Pricing breakdown</h2>
+          <table class="proposal-price-table">
+            <thead>
+              <tr>
+                <th scope="col" id="service-column-label">Service</th>
+                <th scope="col" id="calculation-column-label">Calculation</th>
+                <th scope="col" id="amount-column-label">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" id="proposal-service-name"></th>
+                <td id="proposal-calculation"></td>
+                <td id="proposal-line-total"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th scope="row" colspan="2" id="proposal-total-row-label">Estimated total</th>
+                <td id="proposal-table-total"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </section>
+
+        <section class="proposal-card" aria-labelledby="included-title">
+          <p class="eyebrow">Scope</p>
+          <h2 id="included-title">What is included</h2>
+          <ul class="proposal-checklist" id="proposal-included"></ul>
+        </section>
+
+        <section class="proposal-card" id="proposal-plan-card" aria-labelledby="plan-title" hidden>
+          <p class="eyebrow" id="plan-eyebrow">Personal plan</p>
+          <h2 id="plan-title">The event you are planning</h2>
+          <div class="proposal-subsection" id="proposal-moments-group" hidden>
+            <h3 id="moments-title">Moments to support</h3>
+            <ul class="proposal-pill-list" id="proposal-moments"></ul>
+          </div>
+          <dl class="proposal-details" id="proposal-planning-details"></dl>
+        </section>
+
+        <section class="proposal-card" id="proposal-production-card" aria-labelledby="production-title" hidden>
+          <p class="eyebrow" id="production-eyebrow">Production notes</p>
+          <h2 id="production-title">Preferences to confirm together</h2>
+          <div class="proposal-subsection" id="proposal-production-group" hidden>
+            <h3 id="production-interests-title">Production interests</h3>
+            <ul class="proposal-pill-list" id="proposal-production-interests"></ul>
+          </div>
+          <dl class="proposal-details" id="proposal-production-details"></dl>
+        </section>
+
+        <section class="proposal-card" aria-labelledby="terms-title">
+          <p class="eyebrow">Terms</p>
+          <h2 id="terms-title">Estimate terms</h2>
+          <ul class="proposal-terms" id="proposal-terms"></ul>
+        </section>
+
+        <section class="proposal-card" aria-labelledby="contact-title">
+          <p class="eyebrow">Prepared for</p>
+          <h2 id="contact-title">Contact</h2>
+          <dl class="proposal-details" id="proposal-contact"></dl>
+        </section>
+
+        <section class="proposal-card" id="proposal-notes-card" aria-labelledby="notes-title" hidden>
+          <p class="eyebrow">Client notes</p>
+          <h2 id="notes-title">Event priorities</h2>
+          <p class="proposal-notes" id="proposal-notes"></p>
+        </section>
+      </div>
+
+      <footer class="proposal-footer">
+        <p id="proposal-footer-copy">This estimate is not a reservation. DJ Juan will confirm availability and final scope before booking.</p>
+        <a id="new-estimate-link" href="../#pricing">Create another estimate</a>
+      </footer>
+    </article>
+  </main>
+
+  <script src="../index.js?v=20260726-live-estimate" defer></script>
+  <script src="estimate.js?v=20260726-live-estimate" defer></script>
+</body>
+</html>
