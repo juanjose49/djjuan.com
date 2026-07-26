@@ -176,14 +176,24 @@ function formatEstimateCurrency(amount, language) {
 }
 
 function encodeEstimateDetails(details) {
-  const bytes = new TextEncoder().encode(JSON.stringify(details));
+  const compactDetails = Object.fromEntries(
+    Object.entries(details).filter(([, value]) => {
+      if (value === '' || value === null || value === undefined) return false;
+      if (Array.isArray(value) && value.length === 0) return false;
+      return true;
+    })
+  );
+  const bytes = new TextEncoder().encode(JSON.stringify(compactDetails));
   let binary = '';
 
   bytes.forEach((byte) => {
     binary += String.fromCharCode(byte);
   });
 
-  return btoa(binary);
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '');
 }
 
 function bindEstimateForm() {

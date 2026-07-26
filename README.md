@@ -40,10 +40,12 @@ Only five inputs are required to create a proposal: event date, coverage hours, 
 Submitting the form encodes the supplied event details as base64 JSON and opens:
 
 ```text
-https://djjuan.com/estimate?details=<base64-json>
+https://djjuan.com/estimate?details=<base64url-json>
 ```
 
-The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL.
+The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL. New links omit empty optional fields and use unpadded URL-safe Base64 to reduce their length and avoid reserved URL characters. Previously generated standard Base64 links remain supported.
+
+All public pages expose the root `site.webmanifest`, Apple home-screen metadata, Android-compatible web-app metadata, theme colors, touch icons, and a responsive viewport. Native Universal Link and App Link association files are intentionally absent until there is an iOS app bundle identifier, Android package name, and signing certificate to associate with this domain.
 
 The estimate page ends with the same TidyCal meet-and-greet scheduler used on the main site. The header and proposal scheduling actions link directly to `#booking` on the estimate page. The scheduler can be hidden and reopened; its `bookingClosed` state is stored in the encoded proposal details so shared links retain that choice. A closed scheduler is unloaded and does not reconnect to TidyCal until it is reopened. The schedule loads in a cross-origin iframe with no referrer, so the proposal query string is not disclosed to the booking service. A small same-site resizer accepts height messages only from the booking iframe and its allowlisted TidyCal origins. The third-party parent-page embed script is intentionally omitted because code running in the proposal document would be able to read its private URL.
 

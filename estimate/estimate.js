@@ -624,7 +624,9 @@ const proposalCopy = {
 function decodeProposalDetails(encoded) {
   if (!encoded || encoded.length > 40000) throw new Error('Invalid proposal payload');
 
-  const binary = atob(encoded);
+  const base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+  const paddedBase64 = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=');
+  const binary = atob(paddedBase64);
   const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
   return JSON.parse(new TextDecoder().decode(bytes));
 }
