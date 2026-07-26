@@ -30,6 +30,10 @@ The pricing tool immediately above the booking section calculates event coverage
 
 - Special events: `$199/hour`
 - Weddings: `$299/hour`
+- Daytime and nighttime production together: `+$99`
+- Indoor and outdoor settings together: `+$99`
+
+The two surcharges are independent. Selecting both combined options adds `$198`.
 
 Only five inputs are required to create a proposal: event date, coverage hours, client name, email, and acknowledgment of the estimate conditions. Start time, venue, partner or co-host, event moments, coordinator, music direction, special dances, performers, production interests, and logistics remain optional so a prospect can create a useful link early and refine it with a spouse or planner later.
 

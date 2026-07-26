@@ -153,6 +153,12 @@ const estimateRates = {
   special: 199,
   wedding: 299
 };
+const estimateBothSurcharge = 99;
+
+function getEstimateSurcharge(eventTiming, venueSetting) {
+  return (eventTiming === 'both' ? estimateBothSurcharge : 0) +
+    (venueSetting === 'both' ? estimateBothSurcharge : 0);
+}
 
 function formatEstimateCurrency(amount, language) {
   return new Intl.NumberFormat(language === 'es' ? 'es-US' : 'en-US', {
@@ -190,6 +196,8 @@ function bindEstimateForm() {
         wedding: 'Boda',
         hour: 'hora',
         hours: 'horas',
+        timingSurcharge: 'recargo por evento de día y de noche',
+        settingSurcharge: 'recargo por venue interior y al aire libre',
         items: {
           speakers: 'Hasta 4 potentes bocinas PA',
           microphones: '2 micrófonos inalámbricos',
@@ -207,6 +215,8 @@ function bindEstimateForm() {
         wedding: 'Wedding',
         hour: 'hour',
         hours: 'hours',
+        timingSurcharge: 'daytime and nighttime surcharge',
+        settingSurcharge: 'indoor and outdoor surcharge',
         items: {
           speakers: 'Up to 4 powerful PA speakers',
           microphones: '2 wireless microphones',
@@ -230,8 +240,10 @@ function bindEstimateForm() {
   const getCurrentSelections = () => {
     const data = new FormData(form);
     const eventType = data.get('eventType') === 'wedding' ? 'wedding' : 'special';
-    const eventTiming = data.get('eventTiming') === 'nighttime' ? 'nighttime' : 'daytime';
-    const venueSetting = data.get('venueSetting') === 'outdoor' ? 'outdoor' : 'indoor';
+    const timingValue = String(data.get('eventTiming') || '');
+    const settingValue = String(data.get('venueSetting') || '');
+    const eventTiming = ['daytime', 'nighttime', 'both'].includes(timingValue) ? timingValue : 'daytime';
+    const venueSetting = ['indoor', 'outdoor', 'both'].includes(settingValue) ? settingValue : 'indoor';
     const durationValue = Number(data.get('durationHours'));
     const durationHours = Number.isFinite(durationValue) && durationValue > 0 ? durationValue : 0;
 
@@ -241,8 +253,12 @@ function bindEstimateForm() {
   const updateEstimate = () => {
     const { eventType, eventTiming, venueSetting, durationHours } = getCurrentSelections();
     const rate = estimateRates[eventType];
-    const total = durationHours * rate;
+    const surcharge = getEstimateSurcharge(eventTiming, venueSetting);
+    const total = (durationHours * rate) + surcharge;
     const durationLabel = durationHours === 1 ? strings.hour : strings.hours;
+    const calculationParts = [
+      `${durationHours || 0} ${durationLabel} × ${formatEstimateCurrency(rate, language)}/${language === 'es' ? 'hora' : 'hour'}`
+    ];
     const items = [
       strings.items.speakers,
       strings.items.microphones,
@@ -253,13 +269,22 @@ function bindEstimateForm() {
       items.push(strings.items.collaboration, strings.items.backup);
     }
 
-    items.push(eventTiming === 'nighttime' ? strings.items.nighttime : strings.items.daytime);
-    if (venueSetting === 'outdoor') items.push(strings.items.outdoor);
+    if (eventTiming === 'both') {
+      items.push(strings.items.daytime, strings.items.nighttime);
+      calculationParts.push(`${formatEstimateCurrency(estimateBothSurcharge, language)} ${strings.timingSurcharge}`);
+    } else {
+      items.push(eventTiming === 'nighttime' ? strings.items.nighttime : strings.items.daytime);
+    }
+
+    if (venueSetting === 'outdoor' || venueSetting === 'both') items.push(strings.items.outdoor);
+    if (venueSetting === 'both') {
+      calculationParts.push(`${formatEstimateCurrency(estimateBothSurcharge, language)} ${strings.settingSurcharge}`);
+    }
     items.push(strings.items.metro);
 
     titleElement.textContent = strings[eventType];
     totalElement.textContent = formatEstimateCurrency(total, language);
-    mathElement.textContent = `${durationHours || 0} ${durationLabel} × ${formatEstimateCurrency(rate, language)}/${language === 'es' ? 'hora' : 'hour'}`;
+    mathElement.textContent = calculationParts.join(' + ');
     includedElement.replaceChildren(...items.map((item) => {
       const li = document.createElement('li');
       li.textContent = item;
@@ -291,7 +316,7 @@ function bindEstimateForm() {
     const data = new FormData(form);
     const { eventType, eventTiming, venueSetting, durationHours } = getCurrentSelections();
     const details = {
-      version: 2,
+      version: 3,
       pricingVersion: '2026-07-26',
       language,
       eventType,
@@ -327,7 +352,8 @@ function bindEstimateForm() {
       event_timing: eventTiming,
       venue_setting: venueSetting,
       duration_hours: durationHours,
-      estimate_total: durationHours * estimateRates[eventType],
+      estimate_total: (durationHours * estimateRates[eventType]) + getEstimateSurcharge(eventTiming, venueSetting),
+      estimate_surcharge: getEstimateSurcharge(eventTiming, venueSetting),
       event_moment_count: details.eventMoments.length,
       production_interest_count: details.productionInterests.length,
       page_language: language,

@@ -68,7 +68,7 @@
   <link rel="preload" href="../images/epk/juan-on-mixer-enhanced-960.webp" as="image" type="image/webp"
         imagesrcset="../images/epk/juan-on-mixer-enhanced-480.webp 480w, ../images/epk/juan-on-mixer-enhanced-960.webp 960w, ../images/epk/juan-on-mixer-enhanced.webp 1254w"
         imagesizes="100vw" />
-  <link rel="stylesheet" href="../index.css?v=20260726-contract-details" />
+  <link rel="stylesheet" href="../index.css?v=20260726-both-surcharges" />
 
   <script type="application/ld+json">
   {
@@ -403,7 +403,7 @@
 
             <fieldset class="form-section">
               <legend>3. Elige el estilo de producción</legend>
-              <div class="choice-grid">
+              <div class="choice-grid choice-grid-three">
                 <label class="choice-card">
                   <input type="radio" name="eventTiming" value="daytime" checked />
                   <span><strong>Evento de día</strong><small>Efecto de burbujas incluido donde lo permita el venue</small></span>
@@ -412,8 +412,12 @@
                   <input type="radio" name="eventTiming" value="nighttime" />
                   <span><strong>Evento de noche</strong><small>Iluminación de pista y haze incluidos donde los permita el venue</small></span>
                 </label>
+                <label class="choice-card">
+                  <input type="radio" name="eventTiming" value="both" />
+                  <span><strong>Evento de día y de noche</strong><small>Ambos estilos de producción por un recargo de $99</small></span>
+                </label>
               </div>
-              <div class="choice-grid choice-grid-compact">
+              <div class="choice-grid choice-grid-compact choice-grid-three">
                 <label class="choice-card">
                   <input type="radio" name="venueSetting" value="indoor" checked />
                   <span><strong>Venue interior</strong><small>Energía del venue en condiciones normales</small></span>
@@ -421,6 +425,10 @@
                 <label class="choice-card">
                   <input type="radio" name="venueSetting" value="outdoor" />
                   <span><strong>Venue al aire libre</strong><small>Energía del DJ disponible para audio e iluminación</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="venueSetting" value="both" />
+                  <span><strong>Interior y al aire libre</strong><small>Ambos tipos de espacio por un recargo de $99</small></span>
                 </label>
               </div>
 
@@ -600,6 +608,6 @@
     <small>&copy; <span id="year"></span> DJ Juan. <a href="../" lang="en" hreflang="en" data-track="language" data-track-language="en">English</a></small>
   </footer>
 
-  <script src="../index.js?v=20260726-contract-details" defer></script>
+  <script src="../index.js?v=20260726-both-surcharges" defer></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ const proposalRates = {
   special: 199,
   wedding: 299
 };
+const proposalBothSurcharge = 99;
 
 const proposalCopy = {
   en: {
@@ -28,6 +29,10 @@ const proposalCopy = {
     service: 'Service',
     calculation: 'Calculation',
     amount: 'Amount',
+    timingSurchargeLabel: 'Production style',
+    timingSurcharge: 'Daytime and nighttime surcharge',
+    settingSurchargeLabel: 'Venue setting',
+    settingSurcharge: 'Indoor and outdoor surcharge',
     scope: 'Scope',
     included: 'What is included',
     planEyebrow: 'Personal plan',
@@ -124,8 +129,10 @@ const proposalCopy = {
       wedding: 'Wedding',
       daytime: 'Daytime event',
       nighttime: 'Nighttime event',
+      bothTiming: 'Daytime and nighttime',
       indoor: 'Indoor',
       outdoor: 'Outdoor',
+      bothSetting: 'Indoor and outdoor',
       hour: 'hour',
       hours: 'hours',
       notProvided: 'Not provided',
@@ -165,11 +172,13 @@ const proposalCopy = {
       backup: 'Guaranteed backup-power protection for DJ-provided audio and lighting'
     },
     termItems: {
-      calculation: 'The estimated price is the selected coverage time multiplied by the displayed hourly rate. No additional fees have been added to this estimate.',
+      calculation: 'The estimated price is the selected coverage time multiplied by the displayed hourly rate, plus any displayed $99 both-option surcharges.',
       access: 'Pricing applies only to ADA-accessible venues under normal load-in, setup, operating, weather, and venue conditions.',
       metro: 'The displayed rate includes travel and service anywhere within the Metro DMV.',
       effects: 'Bubbles, haze, and lighting are subject to venue permission and safe operating conditions.',
       outdoor: 'For an outdoor event, DJ-provided power is available for the quoted audio and lighting scope.',
+      bothTiming: 'Selecting both daytime and nighttime production adds a $99 surcharge and includes both production styles.',
+      bothSetting: 'Selecting both indoor and outdoor settings adds a $99 surcharge and includes DJ-provided outdoor power for the quoted scope.',
       wedding: 'Wedding service includes higher-touch planning, music and timeline collaboration, MC service, and guaranteed backup-power protection.',
       confirmation: 'This proposal estimate is not a reservation. Event availability and final scope must be confirmed directly with DJ Juan.'
     }
@@ -198,6 +207,10 @@ const proposalCopy = {
     service: 'Servicio',
     calculation: 'Cálculo',
     amount: 'Monto',
+    timingSurchargeLabel: 'Estilo de producción',
+    timingSurcharge: 'Recargo por evento de día y de noche',
+    settingSurchargeLabel: 'Tipo de venue',
+    settingSurcharge: 'Recargo por interior y al aire libre',
     scope: 'Alcance',
     included: 'Lo que está incluido',
     planEyebrow: 'Plan personal',
@@ -294,8 +307,10 @@ const proposalCopy = {
       wedding: 'Boda',
       daytime: 'Evento de día',
       nighttime: 'Evento de noche',
+      bothTiming: 'Evento de día y de noche',
       indoor: 'Interior',
       outdoor: 'Al aire libre',
+      bothSetting: 'Interior y al aire libre',
       hour: 'hora',
       hours: 'horas',
       notProvided: 'No proporcionado',
@@ -335,11 +350,13 @@ const proposalCopy = {
       backup: 'Protección garantizada con energía de respaldo para el audio y la iluminación del DJ'
     },
     termItems: {
-      calculation: 'El precio estimado es el tiempo de cobertura seleccionado multiplicado por la tarifa por hora. No se agregaron cargos adicionales a este estimado.',
+      calculation: 'El precio estimado es el tiempo de cobertura seleccionado multiplicado por la tarifa por hora, más cualquier recargo mostrado de $99 por elegir ambas opciones.',
       access: 'El precio aplica solo a venues accesibles según ADA, bajo condiciones normales de entrada, montaje, operación, clima y venue.',
       metro: 'La tarifa mostrada incluye traslado y servicio en cualquier lugar del área metropolitana del DMV.',
       effects: 'Las burbujas, el haze y la iluminación están sujetos al permiso del venue y condiciones de operación seguras.',
       outdoor: 'Para un evento al aire libre, hay energía proporcionada por el DJ para el alcance de audio e iluminación cotizado.',
+      bothTiming: 'Elegir producción de día y de noche agrega un recargo de $99 e incluye ambos estilos de producción.',
+      bothSetting: 'Elegir espacios interiores y al aire libre agrega un recargo de $99 e incluye energía proporcionada por el DJ para el alcance cotizado.',
       wedding: 'El servicio de boda incluye planificación detallada, colaboración musical y de timeline, servicio de MC y protección garantizada con energía de respaldo.',
       confirmation: 'Esta propuesta estimada no es una reservación. La disponibilidad y el alcance final deben confirmarse directamente con DJ Juan.'
     }
@@ -418,7 +435,7 @@ function normalizeProposalDetails(raw) {
   };
 
   const isValid =
-    [1, 2].includes(details.version) &&
+    [1, 2, 3].includes(details.version) &&
     details.pricingVersion === '2026-07-26' &&
     ['special', 'wedding'].includes(details.eventType) &&
     /^\d{4}-\d{2}-\d{2}$/.test(details.eventDate) &&
@@ -427,8 +444,8 @@ function normalizeProposalDetails(raw) {
     details.durationHours >= 1 &&
     details.durationHours <= 16 &&
     Number.isInteger(details.durationHours * 2) &&
-    ['daytime', 'nighttime'].includes(details.eventTiming) &&
-    ['indoor', 'outdoor'].includes(details.venueSetting) &&
+    ['daytime', 'nighttime', 'both'].includes(details.eventTiming) &&
+    ['indoor', 'outdoor', 'both'].includes(details.venueSetting) &&
     details.clientName.length > 0 &&
     details.email.length > 0 &&
     (details.guestCount === null || (Number.isInteger(details.guestCount) && details.guestCount >= 1 && details.guestCount <= 2000));
@@ -473,6 +490,19 @@ function calculateProposalEndTime(startTime, durationHours) {
   const [hours, minutes] = startTime.split(':').map(Number);
   const totalMinutes = ((hours * 60) + minutes + Math.round(durationHours * 60)) % (24 * 60);
   return `${String(Math.floor(totalMinutes / 60)).padStart(2, '0')}:${String(totalMinutes % 60).padStart(2, '0')}`;
+}
+
+function getProposalSurcharge(eventTiming, venueSetting) {
+  return (eventTiming === 'both' ? proposalBothSurcharge : 0) +
+    (venueSetting === 'both' ? proposalBothSurcharge : 0);
+}
+
+function getProposalTimingLabel(copy, eventTiming) {
+  return eventTiming === 'both' ? copy.values.bothTiming : copy.values[eventTiming];
+}
+
+function getProposalSettingLabel(copy, venueSetting) {
+  return venueSetting === 'both' ? copy.values.bothSetting : copy.values[venueSetting];
 }
 
 function addProposalDetails(list, entries) {
@@ -521,6 +551,10 @@ function applyProposalCopy(copy, details) {
   setText('service-column-label', copy.service);
   setText('calculation-column-label', copy.calculation);
   setText('amount-column-label', copy.amount);
+  setText('proposal-timing-surcharge-label', copy.timingSurchargeLabel);
+  setText('proposal-timing-surcharge-calculation', copy.timingSurcharge);
+  setText('proposal-setting-surcharge-label', copy.settingSurchargeLabel);
+  setText('proposal-setting-surcharge-calculation', copy.settingSurcharge);
   setText('proposal-total-row-label', copy.totalLabel);
   setText('included-title', copy.included);
   setText('plan-title', copy.planTitle);
@@ -563,7 +597,9 @@ function showProposalError(language = 'en') {
 function renderProposal(details) {
   const copy = proposalCopy[details.language];
   const rate = proposalRates[details.eventType];
-  const total = rate * details.durationHours;
+  const baseTotal = rate * details.durationHours;
+  const surcharge = getProposalSurcharge(details.eventTiming, details.venueSetting);
+  const total = baseTotal + surcharge;
   const durationUnit = details.durationHours === 1 ? copy.values.hour : copy.values.hours;
   const serviceName = copy.values[details.eventType];
   const sitePrefix = details.language === 'es' ? '../es/' : '../';
@@ -575,6 +611,8 @@ function renderProposal(details) {
   document.getElementById('proposal-production-group').hidden = true;
   document.getElementById('proposal-notes-card').hidden = true;
   document.getElementById('proposal-notes').textContent = '';
+  document.getElementById('proposal-timing-surcharge-row').hidden = true;
+  document.getElementById('proposal-setting-surcharge-row').hidden = true;
   document.getElementById('header-booking-link').href = `${sitePrefix}#booking`;
   document.getElementById('proposal-booking-link').href = `${sitePrefix}#booking`;
   document.getElementById('new-estimate-link').href = `${sitePrefix}#pricing`;
@@ -591,14 +629,30 @@ function renderProposal(details) {
     : `${copy.issued} ${new Intl.DateTimeFormat(details.language === 'es' ? 'es-US' : 'en-US', { dateStyle: 'long' }).format(createdDate)}`;
 
   const formattedTotal = formatProposalCurrency(total, details.language);
+  const formattedBaseTotal = formatProposalCurrency(baseTotal, details.language);
   const formattedRate = formatProposalCurrency(rate, details.language);
   const calculation = `${details.durationHours} ${durationUnit} × ${formattedRate}/${copy.values.hour}`;
+  const calculationParts = [calculation];
+
+  if (details.eventTiming === 'both') {
+    calculationParts.push(`${formatProposalCurrency(proposalBothSurcharge, details.language)} ${copy.timingSurcharge.toLowerCase()}`);
+    document.getElementById('proposal-timing-surcharge-amount').textContent =
+      formatProposalCurrency(proposalBothSurcharge, details.language);
+    document.getElementById('proposal-timing-surcharge-row').hidden = false;
+  }
+
+  if (details.venueSetting === 'both') {
+    calculationParts.push(`${formatProposalCurrency(proposalBothSurcharge, details.language)} ${copy.settingSurcharge.toLowerCase()}`);
+    document.getElementById('proposal-setting-surcharge-amount').textContent =
+      formatProposalCurrency(proposalBothSurcharge, details.language);
+    document.getElementById('proposal-setting-surcharge-row').hidden = false;
+  }
 
   document.getElementById('proposal-total').textContent = formattedTotal;
-  document.getElementById('proposal-rate').textContent = calculation;
+  document.getElementById('proposal-rate').textContent = calculationParts.join(' + ');
   document.getElementById('proposal-service-name').textContent = serviceName;
   document.getElementById('proposal-calculation').textContent = calculation;
-  document.getElementById('proposal-line-total').textContent = formattedTotal;
+  document.getElementById('proposal-line-total').textContent = formattedBaseTotal;
   document.getElementById('proposal-table-total').textContent = formattedTotal;
 
   const eventDetails = [];
@@ -617,8 +671,8 @@ function renderProposal(details) {
 
   eventDetails.push(
     [copy.labels.duration, `${details.durationHours} ${durationUnit}`],
-    [copy.labels.timing, copy.values[details.eventTiming]],
-    [copy.labels.setting, copy.values[details.venueSetting]]
+    [copy.labels.timing, getProposalTimingLabel(copy, details.eventTiming)],
+    [copy.labels.setting, getProposalSettingLabel(copy, details.venueSetting)]
   );
 
   if (details.serviceLanguage) {
@@ -651,8 +705,12 @@ function renderProposal(details) {
     included.push(copy.includedItems.collaboration, copy.includedItems.backup);
   }
 
-  included.push(details.eventTiming === 'nighttime' ? copy.includedItems.nighttime : copy.includedItems.daytime);
-  if (details.venueSetting === 'outdoor') included.push(copy.includedItems.outdoor);
+  if (details.eventTiming === 'both') {
+    included.push(copy.includedItems.daytime, copy.includedItems.nighttime);
+  } else {
+    included.push(details.eventTiming === 'nighttime' ? copy.includedItems.nighttime : copy.includedItems.daytime);
+  }
+  if (details.venueSetting === 'outdoor' || details.venueSetting === 'both') included.push(copy.includedItems.outdoor);
   included.push(copy.includedItems.metro);
   addProposalList(document.getElementById('proposal-included'), included);
 
@@ -700,7 +758,9 @@ function renderProposal(details) {
     copy.termItems.effects
   ];
 
+  if (details.eventTiming === 'both') terms.push(copy.termItems.bothTiming);
   if (details.venueSetting === 'outdoor') terms.push(copy.termItems.outdoor);
+  if (details.venueSetting === 'both') terms.push(copy.termItems.bothSetting);
   if (details.eventType === 'wedding') terms.push(copy.termItems.wedding);
   terms.push(copy.termItems.confirmation);
   addProposalList(document.getElementById('proposal-terms'), terms);
@@ -971,7 +1031,7 @@ function readProposalEditor(form, currentDetails) {
 
   return normalizeProposalDetails({
     ...currentDetails,
-    version: 2,
+    version: 3,
     eventName: String(data.get('eventName') || ''),
     startTime: String(data.get('startTime') || ''),
     guestCount,
@@ -1023,7 +1083,7 @@ function updateProposalMissingSummary(details) {
 function createCurrentProposalUrl(details) {
   const url = new URL(window.location.href);
   url.search = '';
-  url.searchParams.set('details', encodeEstimateDetails({ ...details, version: 2 }));
+  url.searchParams.set('details', encodeEstimateDetails({ ...details, version: 3 }));
   return url.toString();
 }
 

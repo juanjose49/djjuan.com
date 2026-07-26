@@ -34,8 +34,8 @@
   <link rel="icon" href="../favicon.ico" sizes="32x32" />
   <link rel="icon" type="image/png" href="../images/brand/dj-juan-icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="../images/brand/dj-juan-icon-512.png" />
-  <link rel="stylesheet" href="../index.css?v=20260726-live-estimate" />
-  <link rel="stylesheet" href="estimate.css?v=20260726-live-estimate" />
+  <link rel="stylesheet" href="../index.css?v=20260726-both-surcharges" />
+  <link rel="stylesheet" href="estimate.css?v=20260726-fixed-share-status" />
 </head>
 
 <body class="proposal-body">
@@ -86,21 +86,8 @@
 
       <div class="proposal-link-status" id="proposal-link-status" role="status" aria-live="polite" aria-atomic="true"></div>
 
-      <section class="proposal-completion-card" aria-labelledby="proposal-editor-title">
-        <div class="proposal-completion-intro">
-          <div>
-            <p class="eyebrow" id="proposal-editor-eyebrow">Complete together</p>
-            <h2 id="proposal-editor-title">Add details whenever you are ready</h2>
-          </div>
-          <p id="proposal-editor-intro">Blank fields can stay open for now. You or your partner can add what you know, and the shareable estimate link will update automatically.</p>
-        </div>
-        <p class="proposal-missing-summary" id="proposal-missing-summary"></p>
-        <form id="proposal-editor" class="proposal-editor" novalidate></form>
-        <p class="proposal-editor-privacy" id="proposal-editor-privacy">Only include information you are comfortable placing in a shareable link. Do not add door codes or private access instructions.</p>
-      </section>
-
       <div class="proposal-grid">
-        <section class="proposal-card" aria-labelledby="event-details-title">
+        <section class="proposal-card proposal-event-card" aria-labelledby="event-details-title">
           <p class="eyebrow">Event</p>
           <h2 id="event-details-title">Event details</h2>
           <dl class="proposal-details" id="proposal-details"></dl>
@@ -123,6 +110,16 @@
                 <td id="proposal-calculation"></td>
                 <td id="proposal-line-total"></td>
               </tr>
+              <tr id="proposal-timing-surcharge-row" hidden>
+                <th scope="row" id="proposal-timing-surcharge-label">Production style</th>
+                <td id="proposal-timing-surcharge-calculation">Daytime and nighttime surcharge</td>
+                <td id="proposal-timing-surcharge-amount"></td>
+              </tr>
+              <tr id="proposal-setting-surcharge-row" hidden>
+                <th scope="row" id="proposal-setting-surcharge-label">Venue setting</th>
+                <td id="proposal-setting-surcharge-calculation">Indoor and outdoor surcharge</td>
+                <td id="proposal-setting-surcharge-amount"></td>
+              </tr>
             </tbody>
             <tfoot>
               <tr>
@@ -131,6 +128,19 @@
               </tr>
             </tfoot>
           </table>
+        </section>
+
+        <section class="proposal-completion-card" aria-labelledby="proposal-editor-title">
+          <div class="proposal-completion-intro">
+            <div>
+              <p class="eyebrow" id="proposal-editor-eyebrow">Complete together</p>
+              <h2 id="proposal-editor-title">Add details whenever you are ready</h2>
+            </div>
+            <p id="proposal-editor-intro">Blank fields can stay open for now. You or your partner can add what you know, and the shareable estimate link will update automatically.</p>
+          </div>
+          <p class="proposal-missing-summary" id="proposal-missing-summary"></p>
+          <form id="proposal-editor" class="proposal-editor" novalidate></form>
+          <p class="proposal-editor-privacy" id="proposal-editor-privacy">Only include information you are comfortable placing in a shareable link. Do not add door codes or private access instructions.</p>
         </section>
 
         <section class="proposal-card" aria-labelledby="included-title">
@@ -185,7 +195,7 @@
     </article>
   </main>
 
-  <script src="../index.js?v=20260726-live-estimate" defer></script>
-  <script src="estimate.js?v=20260726-live-estimate" defer></script>
+  <script src="../index.js?v=20260726-both-surcharges" defer></script>
+  <script src="estimate.js?v=20260726-both-surcharges" defer></script>
 </body>
 </html>
