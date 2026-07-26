@@ -266,6 +266,14 @@ const proposalCopy = {
     copied: 'Latest estimate link copied',
     shareLink: 'Share latest estimate',
     shared: 'Latest estimate ready to share',
+    shareTitle: {
+      special: 'DJ Juan special event estimate',
+      wedding: 'DJ Juan wedding estimate'
+    },
+    shareMessage: {
+      special: 'Check out my estimate from DJ Juan for our special event.',
+      wedding: 'Check out my estimate from DJ Juan for our wedding.'
+    },
     print: 'Print or save PDF',
     booking: 'Schedule a meet and greet',
     bookingEyebrow: 'Booking',
@@ -450,6 +458,14 @@ const proposalCopy = {
     copied: 'Enlace más reciente copiado',
     shareLink: 'Compartir estimado más reciente',
     shared: 'Estimado más reciente listo para compartir',
+    shareTitle: {
+      special: 'Estimado de DJ Juan para evento especial',
+      wedding: 'Estimado de DJ Juan para boda'
+    },
+    shareMessage: {
+      special: 'Mira mi estimado de DJ Juan para nuestro evento especial.',
+      wedding: 'Mira mi estimado de DJ Juan para nuestra boda.'
+    },
     print: 'Imprimir o guardar PDF',
     booking: 'Programar una llamada inicial',
     bookingEyebrow: 'Reserva',
@@ -1493,8 +1509,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof navigator.share === 'function') {
       try {
         await navigator.share({
-          title: document.title,
-          text: details.eventName || (details.eventType === 'wedding' ? copy.weddingTitle : copy.specialTitle),
+          title: copy.shareTitle[details.eventType],
+          text: copy.shareMessage[details.eventType],
           url: latestProposalUrl
         });
         button.textContent = copy.shared;
