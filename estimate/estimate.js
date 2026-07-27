@@ -1399,12 +1399,16 @@ function setProposalLinkStatus(message, fresh = false) {
 }
 
 async function copyProposalUrl(url) {
+  const shareableUrl = new URL(url);
+  shareableUrl.hash = '';
+  const cleanUrl = shareableUrl.toString();
+
   try {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(cleanUrl);
     return 'clipboard_api';
   } catch (_) {
     const input = document.createElement('textarea');
-    input.value = url;
+    input.value = cleanUrl;
     input.setAttribute('readonly', '');
     input.style.position = 'fixed';
     input.style.opacity = '0';
@@ -1420,7 +1424,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeProposalAnalyticsBridge();
   const encoded = new URLSearchParams(window.location.search).get('details');
   let details;
-  let latestProposalUrl = window.location.href;
+  let latestProposalUrl;
 
   try {
     details = normalizeProposalDetails(decodeProposalDetails(encoded));
@@ -1433,6 +1437,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  latestProposalUrl = createCurrentProposalUrl(details);
   bindPrivateTidyCalResize();
   renderProposal(details);
   buildProposalEditor(details);
