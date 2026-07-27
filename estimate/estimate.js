@@ -132,10 +132,15 @@ function bindPrivateTidyCalResize() {
   if (!iframe.hidden) initializeFrame(getConfiguredOrigin());
 }
 
-function getTidyCalSource(iframe) {
-  return document.documentElement.dataset.theme === 'dark'
+function getTidyCalSource(iframe, details) {
+  const configuredSource = document.documentElement.dataset.theme === 'dark'
     ? iframe.dataset.darkSrc
     : iframe.dataset.lightSrc;
+  const source = new URL(configuredSource);
+
+  source.searchParams.set('name', details.clientName);
+  source.searchParams.set('email', details.email);
+  return source.toString();
 }
 
 function renderBookingVisibility(details) {
@@ -160,7 +165,7 @@ function renderBookingVisibility(details) {
   }
 
   iframe.dataset.deferLoad = 'false';
-  const source = getTidyCalSource(iframe);
+  const source = getTidyCalSource(iframe, details);
   if (source && iframe.getAttribute('src') !== source) {
     iframe.setAttribute('src', source);
   }
