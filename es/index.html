@@ -74,7 +74,7 @@
   <link rel="preload" href="../images/epk/juan-on-mixer-enhanced-960.webp" as="image" type="image/webp"
         imagesrcset="../images/epk/juan-on-mixer-enhanced-480.webp 480w, ../images/epk/juan-on-mixer-enhanced-960.webp 960w, ../images/epk/juan-on-mixer-enhanced.webp 1254w"
         imagesizes="100vw" />
-  <link rel="stylesheet" href="../index.css?v=20260726-terms-note" />
+  <link rel="stylesheet" href="../index.css?v=20260727-production-groups" />
 
   <script type="application/ld+json">
   {
@@ -410,33 +410,46 @@
 
             <fieldset class="form-section">
               <legend>3. Elige el estilo de producción</legend>
-              <div class="choice-grid choice-grid-three">
-                <label class="choice-card">
-                  <input type="radio" name="eventTiming" value="daytime" checked />
-                  <span><strong>Evento de día</strong><small>Efecto de burbujas incluido donde lo permita el venue</small></span>
-                </label>
-                <label class="choice-card">
-                  <input type="radio" name="eventTiming" value="nighttime" />
-                  <span><strong>Evento de noche</strong><small>Iluminación de pista y haze incluidos donde los permita el venue</small></span>
-                </label>
-                <label class="choice-card">
-                  <input type="radio" name="eventTiming" value="both" />
-                  <span><strong>Evento de día y de noche</strong><small>Ambos estilos de producción por un recargo de $99</small></span>
-                </label>
+              <div class="production-choice-group" role="group" aria-labelledby="event-timing-label">
+                <p id="event-timing-label" class="choice-group-label">
+                  <span>¿Cuándo será tu evento?</span>
+                  <small>Elige una opción</small>
+                </p>
+                <div class="choice-grid choice-grid-three">
+                  <label class="choice-card">
+                    <input type="radio" name="eventTiming" value="daytime" checked />
+                    <span><strong>Evento de día</strong><small>Efecto de burbujas incluido donde lo permita el venue</small></span>
+                  </label>
+                  <label class="choice-card">
+                    <input type="radio" name="eventTiming" value="nighttime" />
+                    <span><strong>Evento de noche</strong><small>Iluminación de pista y haze incluidos donde los permita el venue</small></span>
+                  </label>
+                  <label class="choice-card">
+                    <input type="radio" name="eventTiming" value="both" />
+                    <span><strong>Evento de día y de noche</strong><small>Ambos estilos de producción por un recargo de $99</small></span>
+                  </label>
+                </div>
               </div>
-              <div class="choice-grid choice-grid-compact choice-grid-three">
-                <label class="choice-card">
-                  <input type="radio" name="venueSetting" value="indoor" checked />
-                  <span><strong>Venue interior</strong><small>Energía del venue en condiciones normales</small></span>
-                </label>
-                <label class="choice-card">
-                  <input type="radio" name="venueSetting" value="outdoor" />
-                  <span><strong>Venue al aire libre</strong><small>Energía del DJ disponible para audio e iluminación</small></span>
-                </label>
-                <label class="choice-card">
-                  <input type="radio" name="venueSetting" value="both" />
-                  <span><strong>Interior y al aire libre</strong><small>Ambos tipos de espacio por un recargo de $99</small></span>
-                </label>
+
+              <div class="production-choice-group" role="group" aria-labelledby="venue-setting-label">
+                <p id="venue-setting-label" class="choice-group-label">
+                  <span>¿Dónde será tu evento?</span>
+                  <small>Elige una opción</small>
+                </p>
+                <div class="choice-grid choice-grid-three">
+                  <label class="choice-card">
+                    <input type="radio" name="venueSetting" value="indoor" checked />
+                    <span><strong>Venue interior</strong><small>Energía del venue en condiciones normales</small></span>
+                  </label>
+                  <label class="choice-card">
+                    <input type="radio" name="venueSetting" value="outdoor" />
+                    <span><strong>Venue al aire libre</strong><small>Energía del DJ disponible para audio e iluminación</small></span>
+                  </label>
+                  <label class="choice-card">
+                    <input type="radio" name="venueSetting" value="both" />
+                    <span><strong>Interior y al aire libre</strong><small>Ambos tipos de espacio por un recargo de $99</small></span>
+                  </label>
+                </div>
               </div>
 
               <div class="preference-group">
