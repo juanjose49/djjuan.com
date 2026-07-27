@@ -116,7 +116,8 @@
   left:0;
   display:flex;
   gap:8px;
-  align-items:flex-start;
+  align-items:center;
+  justify-content:space-between;
   width:min(1120px, calc(100% - 40px));
   margin:0 auto;
   padding:14px 16px;
@@ -126,6 +127,12 @@
   background:color-mix(in srgb, var(--teal) 7%, var(--white));
   box-shadow:0 14px 34px var(--shadow-strong);
   font-size:.92rem;
+}
+.proposal-fixed-copy{
+  flex:0 0 auto;
+}
+#proposal-link-status{
+  flex:1 1 auto;
 }
 .proposal-link-status::before{
   content:"✓";
@@ -541,11 +548,16 @@
     width:100%;
   }
   .proposal-link-status{
+    align-items:stretch;
+    flex-direction:column;
     bottom:calc(10px + env(safe-area-inset-bottom));
     width:calc(100% - 20px);
     padding:12px 14px;
     font-size:.86rem;
     line-height:1.45;
+  }
+  .proposal-fixed-copy{
+    width:100%;
   }
   .proposal-completion-card{
     padding:20px;

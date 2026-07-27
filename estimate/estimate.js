@@ -821,6 +821,9 @@ function applyProposalCopy(copy, details) {
   setText('proposal-title', details.eventType === 'wedding' ? copy.weddingTitle : copy.specialTitle);
   setText('proposal-total-label', copy.totalLabel);
   setText('copy-proposal-link', copy.copyLink);
+  document.querySelectorAll('[data-copy-proposal-link]').forEach((button) => {
+    button.textContent = copy.copyLink;
+  });
   setText('share-proposal-link', copy.shareLink);
   setText('print-proposal', copy.print);
   setText('proposal-booking-link', copy.booking);
@@ -1386,11 +1389,12 @@ function createCurrentProposalUrl(details) {
 
 function setProposalLinkStatus(message, fresh = false) {
   const status = document.getElementById('proposal-link-status');
+  const panel = status.closest('.proposal-link-status');
   status.replaceChildren(document.createTextNode(message));
-  status.classList.remove('is-fresh');
+  panel.classList.remove('is-fresh');
   if (fresh) {
-    void status.offsetWidth;
-    status.classList.add('is-fresh');
+    void panel.offsetWidth;
+    panel.classList.add('is-fresh');
   }
 }
 
@@ -1491,20 +1495,24 @@ document.addEventListener('DOMContentLoaded', () => {
     window.print();
   });
 
-  document.getElementById('copy-proposal-link').addEventListener('click', async (event) => {
-    const button = event.currentTarget;
-    const copy = proposalCopy[details.language];
-    const copyMethod = await copyProposalUrl(latestProposalUrl);
+  document.querySelectorAll('[data-copy-proposal-link]').forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      const clickedButton = event.currentTarget;
+      const copy = proposalCopy[details.language];
+      const copyMethod = await copyProposalUrl(latestProposalUrl);
 
-    button.textContent = copy.copied;
-    setProposalLinkStatus(copy.linkStatus.copied);
-    trackProposalEvent('estimate_link_copied', details, {
-      action_source: 'copy_button',
-      copy_method: copyMethod
+      clickedButton.textContent = copy.copied;
+      setProposalLinkStatus(copy.linkStatus.copied);
+      trackProposalEvent('estimate_link_copied', details, {
+        action_source: clickedButton.classList.contains('proposal-fixed-copy')
+          ? 'fixed_copy_button'
+          : 'copy_button',
+        copy_method: copyMethod
+      });
+      window.setTimeout(() => {
+        clickedButton.textContent = copy.copyLink;
+      }, 2200);
     });
-    window.setTimeout(() => {
-      button.textContent = copy.copyLink;
-    }, 2200);
   });
 
   document.getElementById('share-proposal-link').addEventListener('click', async (event) => {

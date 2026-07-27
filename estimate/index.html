@@ -42,7 +42,7 @@
   <link rel="apple-touch-icon" href="../images/brand/dj-juan-icon-512.png" sizes="512x512" />
   <link rel="manifest" href="/site.webmanifest" />
   <link rel="stylesheet" href="../index.css?v=20260726-terms-note" />
-  <link rel="stylesheet" href="estimate.css?v=20260726-booking-visibility" />
+  <link rel="stylesheet" href="estimate.css?v=20260727-fixed-copy" />
 </head>
 
 <body class="proposal-body">
@@ -95,13 +95,16 @@
       </header>
 
       <div class="proposal-actions" aria-label="Proposal tools">
-        <button class="outline-link proposal-action" id="copy-proposal-link" type="button">Copy latest link</button>
+        <button class="outline-link proposal-action" id="copy-proposal-link" type="button" data-copy-proposal-link>Copy latest link</button>
         <button class="outline-link proposal-action" id="share-proposal-link" type="button">Share latest estimate</button>
         <button class="outline-link proposal-action" id="print-proposal" type="button">Print or save PDF</button>
         <a class="text-link" id="proposal-booking-link" href="../#booking" data-track="booking">Schedule a meet and greet</a>
       </div>
 
-      <div class="proposal-link-status" id="proposal-link-status" role="status" aria-live="polite" aria-atomic="true"></div>
+      <div class="proposal-link-status">
+        <span id="proposal-link-status" role="status" aria-live="polite" aria-atomic="true"></span>
+        <button class="outline-link proposal-action proposal-fixed-copy" type="button" data-copy-proposal-link>Copy latest link</button>
+      </div>
 
       <div class="proposal-grid">
         <section class="proposal-card proposal-event-card" aria-labelledby="event-details-title">
@@ -255,6 +258,6 @@
   </main>
 
   <script src="../index.js?v=20260726-mobile-links" defer></script>
-  <script src="estimate.js?v=20260726-share-message" defer></script>
+  <script src="estimate.js?v=20260727-fixed-copy" defer></script>
 </body>
 </html>
