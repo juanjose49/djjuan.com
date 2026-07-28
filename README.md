@@ -28,13 +28,14 @@ https://djjuan.com/#booking
 
 The pricing tool immediately above the booking section calculates event coverage from the selected service and hours:
 
-- House parties and family events: `$149/hour`
+- House Party: `$149/hour`
 - Special events: `$199/hour`
 - Weddings: `$299/hour`
 - Daytime and nighttime production together: `+$99`
 - Indoor and outdoor settings together: `+$99`
 
 The two surcharges are independent. Selecting both combined options adds `$198`.
+Every service includes fully insured and licensed coverage. Selecting House Party defaults the hosting language to English; the other services leave it open for discussion.
 
 Only four inputs are required to create a proposal: event date, coverage hours, client name, and email. Start time, venue, partner or co-host, event moments, coordinator, music direction, special dances, performers, production interests, and logistics remain optional so a prospect can create a useful link early and refine it with a spouse or planner later. The estimate conditions appear directly below the proposal-link privacy notice without requiring a separate acknowledgment.
 
@@ -44,7 +45,7 @@ Submitting the form encodes the supplied event details as base64 JSON and opens:
 https://djjuan.com/estimate?details=<base64url-json>
 ```
 
-The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL. The native Share action includes a polished message customized for a house party or family event, special event, or wedding instead of using the raw event name as the message. New links omit empty optional fields and use unpadded URL-safe Base64 to reduce their length and avoid reserved URL characters. Previously generated standard Base64 links remain supported.
+The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL. The native Share action includes a polished message customized for a House Party, special event, or wedding instead of using the raw event name as the message. New links omit empty optional fields and use unpadded URL-safe Base64 to reduce their length and avoid reserved URL characters. Previously generated standard Base64 links remain supported.
 
 All public pages expose the root `site.webmanifest`, Apple home-screen metadata, Android-compatible web-app metadata, theme colors, touch icons, and a responsive viewport. Native Universal Link and App Link association files are intentionally absent until there is an iOS app bundle identifier, Android package name, and signing certificate to associate with this domain.
 

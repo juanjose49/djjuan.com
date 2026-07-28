@@ -263,7 +263,7 @@ const proposalCopy = {
     errorLink: 'Create an estimate',
     bookingHeader: 'Meet DJ Juan',
     eyebrow: 'DJ Juan event proposal',
-    familyTitle: 'House party & family event estimate',
+    familyTitle: 'House Party estimate',
     specialTitle: 'Special event estimate',
     weddingTitle: 'Wedding estimate',
     preparedFor: 'Prepared for',
@@ -274,12 +274,12 @@ const proposalCopy = {
     shareLink: 'Share latest estimate',
     shared: 'Latest estimate ready to share',
     shareTitle: {
-      family: 'DJ Juan house party and family event estimate',
+      family: 'DJ Juan House Party estimate',
       special: 'DJ Juan special event estimate',
       wedding: 'DJ Juan wedding estimate'
     },
     shareMessage: {
-      family: 'Check out my estimate from DJ Juan for our house party or family event.',
+      family: 'Check out my estimate from DJ Juan for our house party.',
       special: 'Check out my estimate from DJ Juan for our special event.',
       wedding: 'Check out my estimate from DJ Juan for our wedding.'
     },
@@ -394,7 +394,7 @@ const proposalCopy = {
       logistics: 'Venue and logistics notes'
     },
     values: {
-      family: 'House party & family event',
+      family: 'House Party',
       special: 'Special event',
       wedding: 'Wedding',
       daytime: 'Daytime event',
@@ -436,6 +436,7 @@ const proposalCopy = {
       speakers: 'Up to 4 powerful PA speakers, configured for the room',
       microphones: '2 wireless microphones',
       mc: 'DJ Juan as MC for announcements, toasts, and event flow',
+      insured: 'Fully Insured & Licensed',
       daytime: 'Bubble effect for a daytime event, where permitted by the venue',
       nighttime: 'Dance-floor lighting and haze for a nighttime event, where permitted by the venue',
       metro: 'Travel and service anywhere in the Metro DMV',
@@ -461,7 +462,7 @@ const proposalCopy = {
     errorLink: 'Crear un estimado',
     bookingHeader: 'Conoce a DJ Juan',
     eyebrow: 'Propuesta de evento de DJ Juan',
-    familyTitle: 'Estimado para fiesta en casa o evento familiar',
+    familyTitle: 'Estimado para fiesta en casa',
     specialTitle: 'Estimado para evento especial',
     weddingTitle: 'Estimado para boda',
     preparedFor: 'Preparado para',
@@ -472,12 +473,12 @@ const proposalCopy = {
     shareLink: 'Compartir estimado más reciente',
     shared: 'Estimado más reciente listo para compartir',
     shareTitle: {
-      family: 'Estimado de DJ Juan para fiesta en casa o evento familiar',
+      family: 'Estimado de DJ Juan para fiesta en casa',
       special: 'Estimado de DJ Juan para evento especial',
       wedding: 'Estimado de DJ Juan para boda'
     },
     shareMessage: {
-      family: 'Mira mi estimado de DJ Juan para nuestra fiesta en casa o evento familiar.',
+      family: 'Mira mi estimado de DJ Juan para nuestra fiesta en casa.',
       special: 'Mira mi estimado de DJ Juan para nuestro evento especial.',
       wedding: 'Mira mi estimado de DJ Juan para nuestra boda.'
     },
@@ -592,7 +593,7 @@ const proposalCopy = {
       logistics: 'Notas del venue y logística'
     },
     values: {
-      family: 'Fiesta en casa o evento familiar',
+      family: 'Fiesta en casa',
       special: 'Evento especial',
       wedding: 'Boda',
       daytime: 'Evento de día',
@@ -634,6 +635,7 @@ const proposalCopy = {
       speakers: 'Hasta 4 potentes bocinas PA, configuradas para el espacio',
       microphones: '2 micrófonos inalámbricos',
       mc: 'DJ Juan como MC para anuncios, brindis y el flujo del evento',
+      insured: 'Totalmente asegurado y con licencia',
       daytime: 'Efecto de burbujas para un evento de día, donde lo permita el venue',
       nighttime: 'Iluminación de pista y haze para un evento de noche, donde los permita el venue',
       metro: 'Traslado y servicio en cualquier lugar del área metropolitana del DMV',
@@ -690,7 +692,9 @@ function normalizeProposalDetails(raw) {
     durationHours,
     eventTiming: raw.eventTiming,
     venueSetting: raw.venueSetting,
-    serviceLanguage: ['english', 'spanish', 'bilingual'].includes(raw.serviceLanguage) ? raw.serviceLanguage : '',
+    serviceLanguage: ['english', 'spanish', 'bilingual'].includes(raw.serviceLanguage)
+      ? raw.serviceLanguage
+      : raw.eventType === 'family' ? 'english' : '',
     eventMoments: cleanProposalList(raw.eventMoments, [
       'ceremony',
       'cocktail',
@@ -1011,7 +1015,8 @@ function renderProposal(details) {
     copy.includedItems.performance,
     details.eventType === 'family' ? copy.includedItems.familySpeakers : copy.includedItems.speakers,
     details.eventType === 'family' ? copy.includedItems.familyMicrophones : copy.includedItems.microphones,
-    copy.includedItems.mc
+    copy.includedItems.mc,
+    copy.includedItems.insured
   ];
 
   if (details.eventType === 'wedding') {

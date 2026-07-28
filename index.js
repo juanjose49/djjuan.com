@@ -187,9 +187,10 @@ function bindEstimateForm() {
   const titleElement = document.getElementById('live-estimate-title');
   const includedElement = document.getElementById('estimate-includes');
   const dateInput = document.getElementById('event-date');
+  const serviceLanguageSelect = document.getElementById('service-language');
   const strings = language === 'es'
     ? {
-        family: 'Fiesta en casa o evento familiar',
+        family: 'Fiesta en casa',
         special: 'Evento especial',
         wedding: 'Boda',
         hour: 'hora',
@@ -202,6 +203,7 @@ function bindEstimateForm() {
           speakers: 'Hasta 4 potentes bocinas PA',
           microphones: '2 micrófonos inalámbricos',
           mc: 'DJ Juan como MC',
+          insured: 'Totalmente asegurado y con licencia',
           daytime: 'Efecto de burbujas para un evento de día, donde esté permitido',
           nighttime: 'Iluminación de pista y haze para un evento de noche, donde estén permitidos',
           metro: 'Traslado y servicio en el área metropolitana del DMV',
@@ -211,7 +213,7 @@ function bindEstimateForm() {
         }
       }
     : {
-        family: 'House party & family event',
+        family: 'House Party',
         special: 'Special event',
         wedding: 'Wedding',
         hour: 'hour',
@@ -224,6 +226,7 @@ function bindEstimateForm() {
           speakers: 'Up to 4 powerful PA speakers',
           microphones: '2 wireless microphones',
           mc: 'DJ Juan as MC',
+          insured: 'Fully Insured & Licensed',
           daytime: 'Bubble effect for a daytime event, where permitted',
           nighttime: 'Dance-floor lighting and haze for a nighttime event, where permitted',
           metro: 'Travel and service anywhere in the Metro DMV',
@@ -267,7 +270,8 @@ function bindEstimateForm() {
     const items = [
       eventType === 'family' ? strings.items.familySpeakers : strings.items.speakers,
       eventType === 'family' ? strings.items.familyMicrophones : strings.items.microphones,
-      strings.items.mc
+      strings.items.mc,
+      strings.items.insured
     ];
 
     if (eventType === 'wedding') {
@@ -308,6 +312,14 @@ function bindEstimateForm() {
       if (radio) {
         radio.checked = true;
         radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  });
+
+  form.querySelectorAll('input[name="eventType"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (radio.checked && radio.value === 'family' && serviceLanguageSelect instanceof HTMLSelectElement) {
+        serviceLanguageSelect.value = 'english';
       }
     });
   });
