@@ -28,6 +28,7 @@ https://djjuan.com/#booking
 
 The pricing tool immediately above the booking section calculates event coverage from the selected service and hours:
 
+- House parties and family events: `$149/hour`
 - Special events: `$199/hour`
 - Weddings: `$299/hour`
 - Daytime and nighttime production together: `+$99`
@@ -43,7 +44,7 @@ Submitting the form encodes the supplied event details as base64 JSON and opens:
 https://djjuan.com/estimate?details=<base64url-json>
 ```
 
-The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL. The native Share action includes a polished message customized for a wedding or special event instead of using the raw event name as the message. New links omit empty optional fields and use unpadded URL-safe Base64 to reduce their length and avoid reserved URL characters. Previously generated standard Base64 links remain supported.
+The static proposal renderer lives in `estimate/`. It validates the payload, recomputes the price from the committed rates, and supports English or Spanish output. Optional planning details can be completed directly on the estimate page. Each edit rerenders the proposal and replaces the address-bar URL with a newly encoded payload; the Copy and Share actions always use that latest URL. The native Share action includes a polished message customized for a house party or family event, special event, or wedding instead of using the raw event name as the message. New links omit empty optional fields and use unpadded URL-safe Base64 to reduce their length and avoid reserved URL characters. Previously generated standard Base64 links remain supported.
 
 All public pages expose the root `site.webmanifest`, Apple home-screen metadata, Android-compatible web-app metadata, theme colors, touch icons, and a responsive viewport. Native Universal Link and App Link association files are intentionally absent until there is an iOS app bundle identifier, Android package name, and signing certificate to associate with this domain.
 

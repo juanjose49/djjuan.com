@@ -136,6 +136,7 @@ function bindTrackedLinks() {
 }
 
 const estimateRates = {
+  family: 149,
   special: 199,
   wedding: 299
 };
@@ -188,6 +189,7 @@ function bindEstimateForm() {
   const dateInput = document.getElementById('event-date');
   const strings = language === 'es'
     ? {
+        family: 'Fiesta en casa o evento familiar',
         special: 'Evento especial',
         wedding: 'Boda',
         hour: 'hora',
@@ -195,6 +197,8 @@ function bindEstimateForm() {
         timingSurcharge: 'recargo por evento de día y de noche',
         settingSurcharge: 'recargo por venue interior y al aire libre',
         items: {
+          familySpeakers: '2 potentes bocinas PA',
+          familyMicrophones: '1 micrófono inalámbrico',
           speakers: 'Hasta 4 potentes bocinas PA',
           microphones: '2 micrófonos inalámbricos',
           mc: 'DJ Juan como MC',
@@ -207,6 +211,7 @@ function bindEstimateForm() {
         }
       }
     : {
+        family: 'House party & family event',
         special: 'Special event',
         wedding: 'Wedding',
         hour: 'hour',
@@ -214,6 +219,8 @@ function bindEstimateForm() {
         timingSurcharge: 'daytime and nighttime surcharge',
         settingSurcharge: 'indoor and outdoor surcharge',
         items: {
+          familySpeakers: '2 powerful PA speakers',
+          familyMicrophones: '1 wireless microphone',
           speakers: 'Up to 4 powerful PA speakers',
           microphones: '2 wireless microphones',
           mc: 'DJ Juan as MC',
@@ -236,7 +243,8 @@ function bindEstimateForm() {
 
   const getCurrentSelections = () => {
     const data = new FormData(form);
-    const eventType = data.get('eventType') === 'wedding' ? 'wedding' : 'special';
+    const eventTypeValue = String(data.get('eventType') || '');
+    const eventType = ['family', 'special', 'wedding'].includes(eventTypeValue) ? eventTypeValue : 'special';
     const timingValue = String(data.get('eventTiming') || '');
     const settingValue = String(data.get('venueSetting') || '');
     const eventTiming = ['daytime', 'nighttime', 'both'].includes(timingValue) ? timingValue : 'daytime';
@@ -257,8 +265,8 @@ function bindEstimateForm() {
       `${durationHours || 0} ${durationLabel} × ${formatEstimateCurrency(rate, language)}/${language === 'es' ? 'hora' : 'hour'}`
     ];
     const items = [
-      strings.items.speakers,
-      strings.items.microphones,
+      eventType === 'family' ? strings.items.familySpeakers : strings.items.speakers,
+      eventType === 'family' ? strings.items.familyMicrophones : strings.items.microphones,
       strings.items.mc
     ];
 
@@ -314,7 +322,7 @@ function bindEstimateForm() {
     const { eventType, eventTiming, venueSetting, durationHours } = getCurrentSelections();
     const details = {
       version: 3,
-      pricingVersion: '2026-07-26',
+      pricingVersion: '2026-07-28',
       language,
       eventType,
       eventName: String(data.get('eventName') || '').trim(),
