@@ -313,7 +313,7 @@ const proposalCopy = {
     notesEyebrow: 'Client notes',
     notes: 'Event priorities',
     newEstimate: 'Create another estimate',
-    footer: 'This estimate is not a reservation. DJ Juan will confirm availability and final scope before booking.',
+    footer: 'This proposal estimate is not a booking. Schedule a meet and greet above to confirm your event.',
     linkStatus: {
       current: 'This estimate link is current. Copy or share it whenever you are ready.',
       updated: 'Fresh estimate link generated. The address bar is current. Use Copy or Share again before sending it.',
@@ -505,7 +505,7 @@ const proposalCopy = {
     notesEyebrow: 'Notas del cliente',
     notes: 'Prioridades del evento',
     newEstimate: 'Crear otro estimado',
-    footer: 'Este estimado no es una reservación. DJ Juan confirmará la disponibilidad y el alcance final antes de reservar.',
+    footer: 'Esta propuesta estimada no es una reservación. Agenda la llamada inicial arriba para confirmar tu evento.',
     linkStatus: {
       current: 'Este enlace del estimado está actualizado. Cópialo o compártelo cuando quieras.',
       updated: 'Se generó un enlace nuevo. La barra del navegador está actualizada. Usa Copiar o Compartir de nuevo antes de enviarlo.',
