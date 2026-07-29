@@ -319,7 +319,7 @@ function bindEstimateForm() {
   form.querySelectorAll('input[name="eventType"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       if (radio.checked && radio.value === 'family' && serviceLanguageSelect instanceof HTMLSelectElement) {
-        serviceLanguageSelect.value = 'english';
+        serviceLanguageSelect.value = language === 'es' ? 'spanish' : 'english';
       }
     });
   });
