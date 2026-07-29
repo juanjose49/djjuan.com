@@ -4,3 +4,4 @@ node_modules/
 .instagram-*
 *.log
 epk-review/
+.htaccess
