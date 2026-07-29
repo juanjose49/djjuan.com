@@ -1472,11 +1472,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const saveProposalDetails = (nextDetails) => {
     details = normalizeProposalDetails(nextDetails);
-    latestProposalUrl = createCurrentProposalUrl(details);
+    const nextProposalUrl = createCurrentProposalUrl(details);
+    const proposalUrlChanged = nextProposalUrl !== latestProposalUrl;
+    latestProposalUrl = nextProposalUrl;
     window.history.replaceState({ proposalDetails: details }, '', latestProposalUrl);
     renderProposal(details);
     updateProposalMissingSummary(details);
-    setProposalLinkStatus(proposalCopy[details.language].linkStatus.updated, true);
+    if (proposalUrlChanged) {
+      document.querySelector('.proposal-link-status').hidden = false;
+      setProposalLinkStatus(proposalCopy[details.language].linkStatus.updated, true);
+    }
   };
 
   editor.addEventListener('input', (event) => {
