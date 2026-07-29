@@ -4,6 +4,7 @@ const proposalRates = {
   wedding: 299
 };
 const proposalBothSurcharge = 99;
+const proposalLinkStatusDebounceMs = 2000;
 const proposalAnalyticsPath = '/estimate/';
 const proposalAnalyticsTitle = 'Event Proposal Estimate | DJ Juan';
 const proposalAnalyticsQueue = [];
@@ -1445,6 +1446,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const encoded = new URLSearchParams(window.location.search).get('details');
   let details;
   let latestProposalUrl;
+  let proposalLinkStatusTimer;
 
   try {
     details = normalizeProposalDetails(decodeProposalDetails(encoded));
@@ -1470,7 +1472,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const editor = document.getElementById('proposal-editor');
   let editStarted = false;
 
-  const saveProposalDetails = (nextDetails) => {
+  const showUpdatedProposalLinkStatus = () => {
+    document.querySelector('.proposal-link-status').hidden = false;
+    setProposalLinkStatus(proposalCopy[details.language].linkStatus.updated, true);
+  };
+
+  const saveProposalDetails = (nextDetails, debounceLinkStatus = false) => {
     details = normalizeProposalDetails(nextDetails);
     const nextProposalUrl = createCurrentProposalUrl(details);
     const proposalUrlChanged = nextProposalUrl !== latestProposalUrl;
@@ -1479,13 +1486,20 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProposal(details);
     updateProposalMissingSummary(details);
     if (proposalUrlChanged) {
-      document.querySelector('.proposal-link-status').hidden = false;
-      setProposalLinkStatus(proposalCopy[details.language].linkStatus.updated, true);
+      window.clearTimeout(proposalLinkStatusTimer);
+      if (debounceLinkStatus) {
+        proposalLinkStatusTimer = window.setTimeout(
+          showUpdatedProposalLinkStatus,
+          proposalLinkStatusDebounceMs
+        );
+      } else {
+        showUpdatedProposalLinkStatus();
+      }
     }
   };
 
   editor.addEventListener('input', (event) => {
-    saveProposalDetails(readProposalEditor(editor, details));
+    saveProposalDetails(readProposalEditor(editor, details), true);
 
     if (!editStarted) {
       editStarted = true;
