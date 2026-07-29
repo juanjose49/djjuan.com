@@ -35,7 +35,7 @@ The pricing tool immediately above the booking section calculates event coverage
 - Indoor and outdoor settings together: `+$99`
 
 The two surcharges are independent. Selecting both combined options adds `$198`.
-Every service includes fully insured and licensed coverage. Selecting House Party defaults the hosting language to the page language, English on the English page and Spanish on the Spanish page; the other services leave it open for discussion.
+Every service includes fully insured and licensed coverage. Hosting language defaults to the page language for every service, English on the English page and Spanish on the Spanish page, and can still be changed manually.
 
 Only four inputs are required to create a proposal: event date, coverage hours, client name, and email. Start time, venue, partner or co-host, event moments, coordinator, music direction, special dances, performers, production interests, and logistics remain optional so a prospect can create a useful link early and refine it with a spouse or planner later. The estimate conditions appear directly below the proposal-link privacy notice without requiring a separate acknowledgment.
 

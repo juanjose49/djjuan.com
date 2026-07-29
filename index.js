@@ -236,6 +236,10 @@ function bindEstimateForm() {
         }
       };
 
+  if (serviceLanguageSelect instanceof HTMLSelectElement && !serviceLanguageSelect.value) {
+    serviceLanguageSelect.value = language === 'es' ? 'spanish' : 'english';
+  }
+
   if (dateInput) {
     dateInput.value = '';
     const today = new Date();
@@ -312,14 +316,6 @@ function bindEstimateForm() {
       if (radio) {
         radio.checked = true;
         radio.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    });
-  });
-
-  form.querySelectorAll('input[name="eventType"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      if (radio.checked && radio.value === 'family' && serviceLanguageSelect instanceof HTMLSelectElement) {
-        serviceLanguageSelect.value = language === 'es' ? 'spanish' : 'english';
       }
     });
   });

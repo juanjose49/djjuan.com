@@ -694,7 +694,7 @@ function normalizeProposalDetails(raw) {
     venueSetting: raw.venueSetting,
     serviceLanguage: ['english', 'spanish', 'bilingual'].includes(raw.serviceLanguage)
       ? raw.serviceLanguage
-      : raw.eventType === 'family' ? (raw.language === 'es' ? 'spanish' : 'english') : '',
+      : raw.language === 'es' ? 'spanish' : 'english',
     eventMoments: cleanProposalList(raw.eventMoments, [
       'ceremony',
       'cocktail',
