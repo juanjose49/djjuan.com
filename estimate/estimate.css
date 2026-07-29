@@ -609,30 +609,137 @@
 }
 
 @media print{
+  @page{
+    margin:.5in;
+  }
   :root{
-    color-scheme:light;
+    color-scheme:light !important;
     --ink:#101214;
     --paper:#fff;
     --white:#fff;
     --muted:#4b5051;
     --line:rgba(16,18,20,.16);
+    --gold:#a87323;
+    --teal:#0f6b67;
+    --teal-button:#0f6b67;
   }
+  html,
   .proposal-body{
-    background:#fff;
+    color:#101214 !important;
+    background:#fff !important;
+  }
+  .proposal-body,
+  .proposal-body *{
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
   }
   .proposal-page{
     width:100%;
     padding:0;
   }
-  .proposal-intro,
-  .proposal-card{
+  .proposal-document{
+    gap:14px;
+  }
+  .proposal-grid{
+    display:block;
+  }
+  .proposal-intro{
+    grid-template-columns:minmax(0, 1fr) 220px;
+    padding:24px;
+    border:2px solid #c79746;
+    border-top-width:9px;
+    border-radius:8px;
+    color:#101214 !important;
+    background:#f7f1e5 !important;
     break-inside:avoid;
     box-shadow:none;
   }
-  .proposal-intro{
-    background:#151719 !important;
-    print-color-adjust:exact;
-    -webkit-print-color-adjust:exact;
+  .proposal-intro .eyebrow{
+    color:#805919 !important;
+  }
+  .proposal-intro h1,
+  .proposal-lead strong{
+    color:#101214 !important;
+  }
+  .proposal-intro h1{
+    font-size:32pt;
+  }
+  .proposal-lead{
+    color:#383d3e !important;
+  }
+  .proposal-issued{
+    color:#626768 !important;
+  }
+  .proposal-total-card{
+    border-color:#c79746;
+    color:#101214 !important;
+    background:#fff !important;
+    backdrop-filter:none;
+  }
+  .proposal-total-card span,
+  .proposal-total-card small{
+    color:#4b5051 !important;
+  }
+  .proposal-total-card strong{
+    color:#101214 !important;
+    font-size:28pt;
+  }
+  .proposal-card{
+    margin-bottom:12px;
+    border-color:#d5d0c7;
+    color:#101214 !important;
+    background:#fff !important;
+    box-shadow:none;
+  }
+  .proposal-event-card,
+  .proposal-price-card,
+  .proposal-card[aria-labelledby="contact-title"],
+  #proposal-notes-card{
+    break-inside:avoid;
+  }
+  .proposal-card h2,
+  .proposal-details dd,
+  .proposal-notes,
+  .proposal-pill-list li{
+    color:#101214 !important;
+  }
+  .proposal-card .eyebrow,
+  .proposal-subsection h3{
+    color:#805919 !important;
+  }
+  .proposal-details dt,
+  .proposal-checklist li,
+  .proposal-terms li,
+  .proposal-price-table thead{
+    color:#4b5051 !important;
+  }
+  .proposal-details dt,
+  .proposal-details dd,
+  .proposal-price-table th,
+  .proposal-price-table td{
+    border-color:#d5d0c7;
+  }
+  .proposal-price-table th:last-child,
+  .proposal-price-table td:last-child{
+    min-width:86px;
+    padding-left:18px;
+    white-space:nowrap;
+  }
+  .proposal-pill-list li{
+    border-color:#9fc7c4;
+    background:#edf6f5 !important;
+  }
+  .proposal-checklist li,
+  .proposal-terms li,
+  .proposal-price-table tr{
+    break-inside:avoid;
+  }
+  .proposal-footer{
+    color:#4b5051 !important;
+    border-color:#d5d0c7;
+  }
+  #new-estimate-link{
+    display:none !important;
   }
   .proposal-header,
   .proposal-actions,
